@@ -1,4 +1,3 @@
-
 public class Game {
 
 	public String playerGameMapping;		// not sure on type
