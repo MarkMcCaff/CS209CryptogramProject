@@ -27,7 +27,10 @@ public class Game {
 	}
 	
 	public void playGame() {
-		
+		Scanner chooseCryptogram = new Scanner(System.in);  
+	    System.out.println("ENTER WHAT TYPE OF CRYPTOGRAM YOU WOULD LIKE TO PLAY ");
+	    System.out.println("NUMBER OR LETTER ");
+
 	}
 	
 	public void generateCryptogram() {
@@ -36,17 +39,22 @@ public class Game {
 	
 	public void enterLetter() {
 		Scanner letterGuess = new Scanner(System.in);  
-	    System.out.println("Choose a letter ");
+	    System.out.println("CHOOSE A LETTER ");
 	    Scanner posGuess = new Scanner(System.in);
-	    System.out.println("Choose a position for your guess ");
+	    System.out.println("CHOOSE A POSITION FOR YOUR GUESS ");
+	    
+	    System.out.println();
 	}
 	
 	public void undoLetter() {
-		Scanner letterUndo = new Scanner(System.in);  
-	    System.out.println("Choose a letter to undo ");
-	    Scanner posUndo = new Scanner(System.in);
-	    System.out.println("Enter the position of the letter you would like to undo");	
+		Scanner letterGuess = new Scanner(System.in);  
+	    System.out.println("CHOOSE A LETTER TO UNDO");
+	    Scanner posGuess = new Scanner(System.in);
+	    System.out.println("ENTER THE POSITION OF THE LETTER YOU WOULD LIKE TO UNDO");
+	    
+	    
 	}
+	
 	
 	public void viewFrequencies() {
 		
