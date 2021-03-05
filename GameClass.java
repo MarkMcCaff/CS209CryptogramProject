@@ -15,10 +15,7 @@ public class Game {
 	}
 	
 	public void Game(Player p) {
-		Scanner letterGuess = new Scanner(System.in);  
-	    System.out.println("Choose a letter ");
-	    Scanner posGuess = new Scanner(System.in);
-	    System.out.println("Choose a position for your guess ");
+		
 	}
 	
 	public void getHint() {
@@ -38,7 +35,10 @@ public class Game {
 	}
 	
 	public void enterLetter() {
-		
+		Scanner letterGuess = new Scanner(System.in);  
+	    System.out.println("Choose a letter ");
+	    Scanner posGuess = new Scanner(System.in);
+	    System.out.println("Choose a position for your guess ");
 	}
 	
 	public void undoLetter() {
