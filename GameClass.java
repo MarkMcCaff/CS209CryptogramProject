@@ -27,14 +27,15 @@ public class Game {
 	}
 	
 	public void playGame() {
-		Scanner chooseCryptogram = new Scanner(System.in);  
-	    System.out.println("ENTER WHAT TYPE OF CRYPTOGRAM YOU WOULD LIKE TO PLAY ");
-	    System.out.println("NUMBER OR LETTER ");
+
 
 	}
 	
 	public void generateCryptogram() {
-		
+		Scanner chooseCryptogram = new Scanner(System.in);  
+	    System.out.println("ENTER WHAT TYPE OF CRYPTOGRAM YOU WOULD LIKE TO PLAY ");
+		Systen.out.println("");
+	    System.out.println("NUMBER OR LETTER ");
 	}
 	
 	public void enterLetter() {
