@@ -42,7 +42,10 @@ public class Game {
 	}
 	
 	public void undoLetter() {
-		
+		Scanner letterUndo = new Scanner(System.in);  
+	    System.out.println("Choose a letter to undo ");
+	    Scanner posUndo = new Scanner(System.in);
+	    System.out.println("Enter the position of the letter you would like to undo");	
 	}
 	
 	public void viewFrequencies() {
