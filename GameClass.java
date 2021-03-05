@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Game {
 
 	public String playerGameMapping;		// not sure on type
@@ -13,7 +15,10 @@ public class Game {
 	}
 	
 	public void Game(Player p) {
-		
+		Scanner letterGuess = new Scanner(System.in);  
+	    System.out.println("Choose a letter ");
+	    Scanner posGuess = new Scanner(System.in);
+	    System.out.println("Choose a position for your guess ");
 	}
 	
 	public void getHint() {
