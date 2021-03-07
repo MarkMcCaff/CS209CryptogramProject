@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class numericalCrypto extends Cryptogram {
-
+	
 	public numericalCrypto() {
 		this.getPhrase();
 		this.encrypt(phrase);
