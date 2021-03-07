@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Cryptogram {
@@ -8,6 +10,7 @@ public class Cryptogram {
 	public int frequency;
 	public char[] encryptedPhrase;
 	public int[] intEncryptedPhrase;
+	public ArrayList<String> phrases;
 	
 	public Cryptogram() {
 		this.createPhrase();
@@ -16,13 +19,24 @@ public class Cryptogram {
 	// reads a phrase (currently only one) from a text file
 	public void createPhrase() {
 		try {
-			File myObj = new File("filename.txt");
+			File myObj = new File("filename.txt"); // path for the file required
+			phrases = new ArrayList<String>();
 			Scanner sc = new Scanner(myObj);
-				if (sc.hasNextLine()) {
+				while (sc.hasNextLine()) {
 					String data = sc.nextLine();
-					phrase = data;
+					phrases.add(data);
 				}
 			sc.close();
+			if (phrases.isEmpty()) {
+				System.out.println("No phrases detected - Now exiting...");
+				System.exit(0);
+			}
+			// Creates a random number to choose the phrase 
+			Random r = new Random();
+			int low = 0;
+			int high = phrases.size();
+			int result = r.nextInt(high - low) + low;
+			phrase = phrases.get(result);
 		}
 		catch (FileNotFoundException e) {
 			System.out.println("An error occurred.");
