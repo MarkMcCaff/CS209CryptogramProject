@@ -17,6 +17,7 @@ public class alphabeticalCrypto extends Cryptogram {
 		ArrayList<Integer> numsUsed = new ArrayList<Integer>();
 			
 		for (int i = 0; i < phrase.length(); i++) {
+			// If the phrase has an empty space, the puzzle must also show this 
 			if (usedChars[i] == ' ') {
 				encChars[i] = ' ';
 			}
@@ -56,6 +57,12 @@ public class alphabeticalCrypto extends Cryptogram {
 			}
 		}
 		// Prints the results of the mapping 
-		System.out.println(encChars);
+		System.out.println("Encoded phrase: ");
+		for (int i = 0; i < encChars.length; i++) {
+			System.out.print(encChars[i]);
+		}
+		// Clones the result of the mapping to a variable from the overall Cryptogram class
+		encryptedPhrase = encChars.clone();
+		System.out.println(" ");
 	}
 }
