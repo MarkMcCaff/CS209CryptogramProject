@@ -6,21 +6,23 @@ public class Cryptogram {
 
 	protected String phrase;
 	public int frequency;
+	public char[] encryptedPhrase;
+	public int[] intEncryptedPhrase;
 	
 	public Cryptogram() {
-		this.getPhrase();
+		this.createPhrase();
 	}
 	
 	// reads a phrase (currently only one) from a text file
-	public void getPhrase() {
+	public void createPhrase() {
 		try {
 			File myObj = new File("C:\\Users\\scott\\Desktop\\hello.txt");
-			Scanner myReader = new Scanner(myObj);
-				if (myReader.hasNextLine()) {
-					String data = myReader.nextLine();
+			Scanner sc = new Scanner(myObj);
+				if (sc.hasNextLine()) {
+					String data = sc.nextLine();
 					phrase = data;
 				}
-			myReader.close();
+			sc.close();
 		}
 		catch (FileNotFoundException e) {
 			System.out.println("An error occurred.");
@@ -31,7 +33,17 @@ public class Cryptogram {
 		return frequency;
 	}
 	
-	public static void main(String[] args) throws FileNotFoundException {
-		Cryptogram cryp = new Cryptogram();
+	public String getPhrase() {
+		return phrase;
+	}
+	
+	// If the puzzle is alphabetical, it will call this method 
+	public char[] getEncryption() {
+		return encryptedPhrase;
+	}
+
+	// If the puzzle is numerical, it will call this method 
+	public int[] getIntEncryption() {
+		return intEncryptedPhrase;
 	}
 }
