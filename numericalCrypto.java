@@ -14,6 +14,8 @@ public class numericalCrypto extends Cryptogram {
 		int[] encChars = new int[usedChars.length];
 
 		for (int i = 0; i < phrase.length(); i++) {
+			// If the phrase has an empty space, the puzzle shows this through a 0 (for now) as it's impossible for 
+			// this to be mapped to.
 			if (usedChars[i] == ' ') {
 				encChars[i] = 0;
 			}
@@ -49,8 +51,14 @@ public class numericalCrypto extends Cryptogram {
 					}
 				}	
 			}
-			// Prints the results of the mapping
+		}
+		// Prints the results of the mapping
+		System.out.print("Encoded phrase: ");
+		for (int i = 0; i < encChars.length; i++) {
 			System.out.print(encChars[i] + " ");
 		}
+		// Clones the result of the mapping to an integer specific variable from the overall Cryptogram class
+		intEncryptedPhrase = encChars.clone();
+		System.out.println(" ");
 	}
 }
