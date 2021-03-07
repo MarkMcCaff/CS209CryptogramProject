@@ -267,9 +267,12 @@ public class Game {
 	}
 	
 	// Method used to start the program
-	public static void startup(Scanner sc, Player play) {
+	public static void startup(Scanner sc) {
+		System.out.println("Please enter your username: ");
+		String name = sc.nextLine();
+		Player play = new Player(name);
 		System.out.println("--------------------------------------------------------");
-		System.out.println("the following digits correspond to the specified action:");
+		System.out.println("Welcome " + name + ", the following digits correspond to the specified action:");
 		System.out.println("1 - alphabetical cryptogram");
 		System.out.println("2 - numerical cryptogram");
 		System.out.println("--------------------------------------------------------");
@@ -347,9 +350,8 @@ public class Game {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		Player play = new Player("John");
 		Scanner sc = new Scanner(System.in); 
-		startup(sc, play);
+		startup(sc);
 		sc.close();
 	}	
 }
