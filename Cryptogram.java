@@ -16,7 +16,7 @@ public class Cryptogram {
 	// reads a phrase (currently only one) from a text file
 	public void createPhrase() {
 		try {
-			File myObj = new File("C:\\Users\\scott\\Desktop\\hello.txt");
+			File myObj = new File("filename.txt");
 			Scanner sc = new Scanner(myObj);
 				if (sc.hasNextLine()) {
 					String data = sc.nextLine();
