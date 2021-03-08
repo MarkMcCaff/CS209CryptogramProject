@@ -15,7 +15,6 @@ public class alphabeticalCrypto extends Cryptogram {
 		char[] encChars = new char[usedChars.length];
 		// numsUsed stores the random numbers used so mapping cannot be repeated 
 		ArrayList<Integer> numsUsed = new ArrayList<Integer>();
-			
 		for (int i = 0; i < phrase.length(); i++) {
 			// If the phrase has an empty space, the puzzle must also show this 
 			if (usedChars[i] == ' ') {
@@ -27,7 +26,6 @@ public class alphabeticalCrypto extends Cryptogram {
 				int low = 65;
 				int high = 91;
 				int result = r.nextInt(high - low) + low;
-				
 				// If already used in a mapping, another random number is chosen 
 				if (numsUsed.contains(result)) {
 					while (numsUsed.contains(result)) {
