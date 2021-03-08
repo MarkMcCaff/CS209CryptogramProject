@@ -280,7 +280,6 @@ public class Game {
 		System.out.print("which action would you like to carry out? ");  
 		int input = sc.nextInt();  
 		sc.nextLine();
-		
 		if (input == 1 || input == 2) { 
 			generateCryptogram(sc, input, play);
 		}
@@ -320,7 +319,6 @@ public class Game {
 			System.out.println("Which action would you like to carry out?");
 			int input = sc.nextInt();  
 			sc.nextLine();
-
 			// a switch is used to ensure the user's input is valid and also carries out the spcific methods 
 			switch (input) {
 			case 1: 
