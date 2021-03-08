@@ -19,7 +19,7 @@ public class Cryptogram {
 	// reads a phrase (currently only one) from a text file
 	public void createPhrase() {
 		try {
-			File myObj = new File("filename.txt"); // path for the file required
+			File myObj = new File("C:\\Users\\scott\\Desktop\\hello.txt");
 			phrases = new ArrayList<String>();
 			Scanner sc = new Scanner(myObj);
 				while (sc.hasNextLine()) {
