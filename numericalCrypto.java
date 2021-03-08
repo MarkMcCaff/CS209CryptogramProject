@@ -12,7 +12,6 @@ public class numericalCrypto extends Cryptogram {
 		char[] usedChars = phrase.toUpperCase().toCharArray();
 		// encChars stores the encrypted phrase 
 		int[] encChars = new int[usedChars.length];
-
 		for (int i = 0; i < phrase.length(); i++) {
 			// If the phrase has an empty space, the puzzle shows this through a 0 (for now) as it's impossible for 
 			// this to be mapped to.
@@ -25,7 +24,6 @@ public class numericalCrypto extends Cryptogram {
 				int low = 1;
 				int high = 27;
 				int result = r.nextInt(high - low) + low;
-				
 				// If already used in a mapping, another random number is chosen 
 				for (int j = 0; j < encChars.length; j++) {
 					if (encChars[j] == result) {
