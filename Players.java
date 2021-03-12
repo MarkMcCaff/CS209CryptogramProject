@@ -3,7 +3,7 @@ import java.io.FileWriter
 import java.util.*;
 
 
-public class Players implements Player{
+public class Players extends Player{
 
 	public ArrayList <String> playerList;	
 	
@@ -24,7 +24,7 @@ public class Players implements Player{
 		    }
 		}
 	}
-		
+			
 		
 	public void savePlayers() {
 		if (Game.savegame()) {
