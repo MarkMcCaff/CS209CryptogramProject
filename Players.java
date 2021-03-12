@@ -22,6 +22,7 @@ public class Players implements Player{
      		System.out.println("An error occurred.");
 		    e.printStackTrace();
 		    }
+		}
 	}
 		
 		
@@ -40,11 +41,9 @@ public class Players implements Player{
 			}
 		}
 		
-		}
-			myWriter.write(newUserName + cryptogramsPlayed + cryptogramsCompleted + correctGuesses);
-		}
-		
 	}
+		
+		
 
 	public void findPlayer(Player p) {
 		try {
@@ -60,4 +59,6 @@ public class Players implements Player{
 				System.out.println("No users exist - try creating a new one");
 				System.exit(0);
 			}
+		}
+	}
 }
