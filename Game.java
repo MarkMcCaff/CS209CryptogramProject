@@ -3,18 +3,18 @@ import java.util.*;
 
 public class Game {
 
-	public Player currentPlayer;
+	//public Player currentPlayer;
 	// A boolean is used to loop through the while loop until the player wishes to exit
 	static boolean complete = false;
 	// This character array stores the current player's answer and updates when they guess or remove a letter
 	static char[] playerGuess;
 	
-	public Game(Player p, int cryptoType) {
-	}
+	//public Game(Player p, int cryptoType) {
+	//}
 	
-	public Game(Player p) {
+	//public Game(Player p) {
 		
-	}
+	//}
 	
 	public void getHint() {
 		
@@ -307,12 +307,23 @@ public class Game {
 	// Method used to deal with the player's input from the commandList method 
 	public static void commandInput(Scanner sc, Cryptogram currCrypto, Player play) {
 		// determines the length of the playerGuess array from the specific getEncryption method, depending
-		// on which Cryptogram object was created 
+		// on which Cryptogram object was created and then inputs the spaces into the correct places for
+		// the user's guesses
 		if (currCrypto instanceof alphabeticalCrypto) {
 			playerGuess = new char[currCrypto.getEncryption().length];
+			for (int i = 0; i < currCrypto.encryptedPhrase.length; i++ ) {
+				if (currCrypto.encryptedPhrase[i] == ' ') {
+					playerGuess[i] = ' ';
+				}
+			}
 		}
 		else {
-		    playerGuess = new char[currCrypto.getIntEncryption().length];		
+		    playerGuess = new char[currCrypto.getIntEncryption().length];
+			for (int i = 0; i < currCrypto.intEncryptedPhrase.length; i++ ) {
+				if (currCrypto.intEncryptedPhrase[i] == 0) {
+					playerGuess[i] = ' ';
+				}
+			}
 		}
 		// Loops until the player opts to exit 
 		while (!complete) {
