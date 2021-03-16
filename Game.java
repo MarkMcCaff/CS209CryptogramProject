@@ -48,9 +48,9 @@ public class Game {
 	public static void enterLetterAlpha(Scanner sc, Cryptogram currCrypto, Player play) { 
 	    System.out.println("Choose a letter to replace: ");
 	    // Scanner reads the next two separate characters from the input stream
-	    char replacer = sc.next().charAt(0);
+	    char replacer = Character.toUpperCase(sc.next().charAt(0));
 		System.out.println("What letter do you think it is? ");
-		char guess = sc.next().charAt(0);
+		char guess = Character.toUpperCase(sc.next().charAt(0));
 		// The encrypted puzzle is called from the Cryptogram class
 	    char[] encryption = currCrypto.getEncryption();
 	    // A temporary array is used to compare elements and inputs to ensure there's no automatic overwriting 
@@ -143,7 +143,7 @@ public class Game {
 	    // Scanner reads the next two inputs from the input stream
 	    int replacer = sc.nextInt();
 		System.out.println("What letter do you think it is? ");
-		char guess = sc.next().charAt(0);
+		char guess = Character.toUpperCase(sc.next().charAt(0));
 		// The encrypted puzzle is called from the Cryptogram class
 	    int[] encryption = currCrypto.getIntEncryption();
 	    // A temporary array is used to compare elements and inputs to ensure there's no automatic overwriting 
