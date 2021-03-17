@@ -132,6 +132,7 @@ public class Game {
 		    // Updates the players stats based on whether the guess was correct or not
 		    if (temp[location] == guess) {
 		    	play.incrementCorrGuesses();
+		    	play.incrementGuesses();
 		    }
 		    else {
 		    	play.incrementGuesses();
