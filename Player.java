@@ -46,4 +46,8 @@ public class Player {
 	public int getGuesses() {
 		return totalGuesses;
 	}
+
+	public String getUsername() {
+		return username;
+	}
 }

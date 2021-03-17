@@ -1,4 +1,5 @@
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Game {
@@ -66,7 +67,7 @@ public class Game {
 	    // If it has already been guessed, it asks the player if they want to overwrite it
 	    if (playerGuess[overwriteLocation] != 0) {
 	    	System.out.println("You have already made a guess for this letter. Overwrite? Y/N: ");
-	    	char ans = sc.next().charAt(0);
+	    	char ans = Character.toUpperCase(sc.next().charAt(0));
 	    	// If they answer yes, it's overwritten
 	    	if (ans == 'Y') {
 	    		enterLetterAlphHelper(temp, guess, replacer, encryption, play);
@@ -159,7 +160,7 @@ public class Game {
 	    // If it has already been guessed, it asks the player if they want to overwrite it
 	    if (playerGuess[overwriteLocation] != 0) {
 	    	System.out.println("You have already made a guess for this letter. Overwrite? Y/N: ");
-	    	char ans = sc.next().charAt(0);
+	    	char ans = Character.toUpperCase(sc.next().charAt(0));
 	    	// If they answer yes, it's overwritten
 	    	if (ans == 'Y') {
 	    		enterLetterNumHelper(temp, guess, replacer, encryption, play);
@@ -253,13 +254,354 @@ public class Game {
 	public void viewFrequencies() {
 		
 	}
-	
-	public void saveGame() {
-		
+
+	//Method for saving the user's cryptogram progress
+	public static void saveGame(Cryptogram currCrypto, Player play, Scanner sc) {
+		//Checks whether the user has any previous saves
+		boolean previousSave = previousSaveGame(play);
+		//Checks what type the current cryptogram is
+		if (currCrypto instanceof alphabeticalCrypto) {
+			//If there is a previous save for the user then it asks the user whether they want to overwrite
+			if(previousSave) {
+				System.out.println("There is already a cryptogram saved under this username.");
+				System.out.println("Would you like to overwrite it? Y/N: ");
+				char ans = Character.toUpperCase(sc.next().charAt(0));
+				// If they answer yes, it's overwritten
+				if (ans == 'Y') {
+					//Gets rid of the user's previous saved cryptogram
+					overwrite(currCrypto, play);
+					//Saves the current cryptogram
+					writeToLetterCryptogramFile(currCrypto, play);
+					System.out.println("Your cryptogram has been saved.");
+				}
+				// Any other answers won't update it
+				else {
+					System.out.println("Your cryptogram has not been saved.");
+				}
+
+			}else{
+				//Saves the current cryptogram
+				writeToLetterCryptogramFile(currCrypto, play);
+				System.out.println("Your cryptogram has been saved.");
+			}
+		}else {
+			if(previousSave) {
+				System.out.println("There is already a cryptogram saved under this username.");
+				System.out.println("Would you like to overwrite it? Y/N: ");
+				char ans = Character.toUpperCase(sc.next().charAt(0));
+				// If they answer yes, it's overwritten
+				if (ans == 'Y') {
+					overwrite(currCrypto, play);
+					writeToNumberCryptogramFile(currCrypto, play);
+					System.out.println("Your cryptogram has been saved.");
+				}
+				// Any other answers won't update it
+				else {
+					System.out.println("Your cryptogram has not been saved.");
+				}
+			}else{
+				writeToNumberCryptogramFile(currCrypto, play);
+				System.out.println("Your cryptogram has been saved.");
+			}
+		}
 	}
-	
-	public void loadGame() {
-		
+
+	//Method for getting rid of user's previous save when the want to save a new crypto
+	public static void overwrite(Cryptogram currCrypto, Player play) {
+		File myObj1 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
+		List<String> words1 = new ArrayList<String>();
+		List<String> loadUsername = new ArrayList<String>();
+		List<String> loadPuzzle = new ArrayList<String>();
+		List<String> loadGuess = new ArrayList<String>();
+		List<String> loadSolution = new ArrayList<String>();
+		String remove = play.getUsername();
+		int removeInt = -1;
+		try (Scanner sc = new Scanner((myObj1), StandardCharsets.UTF_8.name())) {
+			while (sc.hasNextLine()) {
+				words1.add(sc.nextLine());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		int i = 0;
+		for (String line:words1) {
+			String[] split = line.split(",");
+			loadUsername.add(split[0]);
+			loadPuzzle.add(split[1]);
+			loadGuess.add(split[2]);
+			loadSolution.add(split[3]);
+			if (split[0].equals(remove)) {
+				removeInt = i;
+			}
+			i++;
+		}
+		if (removeInt != -1) {
+			loadUsername.remove(removeInt);
+			loadPuzzle.remove(removeInt);
+			loadGuess.remove(removeInt);
+			loadSolution.remove(removeInt);
+			try {
+				FileWriter fw = new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
+				BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt", true));
+				fw.write("");
+				for (int j = 0; j < loadUsername.size(); j++) {
+					bw.append(loadUsername.get(j));
+					bw.append(",");
+					bw.append(loadPuzzle.get(j));
+					bw.append(",");
+					bw.append(loadGuess.get(j));
+					bw.append(",");
+					bw.append(loadSolution.get(j));
+					bw.newLine();
+				}
+				bw.close();
+				fw.close();
+			} catch (IOException e) {
+				System.out.println("An error occurred.");
+				e.printStackTrace();
+			}
+		} else {
+			File myObj2 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
+			List<String> words2 = new ArrayList<String>();
+			List<String> loadIntUsername = new ArrayList<String>();
+			ArrayList<String> tempPuzzle = new ArrayList<String>();
+			ArrayList<ArrayList<String> > loadIntPuzzle = new ArrayList<ArrayList<String> >();
+			List<String> loadIntGuess = new ArrayList<String>();
+			List<String> loadIntSolution = new ArrayList<String>();
+			try (Scanner sc = new Scanner((myObj2), StandardCharsets.UTF_8.name())) {
+				while (sc.hasNextLine()) {
+					words2.add(sc.nextLine());
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			i = 0;
+			for (String line : words2) {
+				String[] split = line.split(",");
+				loadIntUsername.add(split[0]);
+				loadIntGuess.add(split[1]);
+				loadIntSolution.add(split[2]);
+				for (int m = 3; m < split.length; m++) {
+					tempPuzzle.add(split[m]);
+				}
+				loadIntPuzzle.add(tempPuzzle);
+				if (split[0].equals(remove)) {
+					removeInt = i;
+				}
+				i++;
+				if (removeInt != -1) {
+					loadIntUsername.remove(removeInt);
+					loadIntPuzzle.remove(removeInt);
+					loadIntGuess.remove(removeInt);
+					loadIntSolution.remove(removeInt);
+					try {
+						FileWriter fw = new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
+						BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt", true));
+						fw.write("");
+						for (int j = 0; j < loadIntUsername.size(); j++) {
+							bw.append(loadIntUsername.get(j));
+							bw.append(",");
+							bw.append(loadIntGuess.get(j));
+							bw.append(",");
+							bw.append(loadIntSolution.get(j));
+							bw.append(",");
+							for (int m = 0; i < split.length-3; m++) {
+								bw.append(loadIntPuzzle.get(j).get(m));
+							}
+							bw.newLine();
+						}
+						bw.close();
+						fw.close();
+					} catch (IOException e) {
+						System.out.println("An error occurred.");
+						e.printStackTrace();
+					}
+				}
+			}
+
+
+		}
+	}
+
+	//This method checks whether the user has any previous saves
+	public static boolean previousSaveGame(Player play) {
+		boolean previous = false;
+
+		File myObj1 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
+		List<String> words1 = new ArrayList<String>();
+		try (Scanner sc = new Scanner((myObj1), StandardCharsets.UTF_8.name())) {
+			while (sc.hasNextLine()) {
+				words1.add(sc.nextLine());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (String line : words1) {
+			String[] split = line.split(",");
+			if (split[0].equals(play.getUsername())) {
+				previous = true;
+			}
+		}
+		File myObj2 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
+		List<String> words2 = new ArrayList<String>();
+		try(Scanner sc = new Scanner((myObj2), StandardCharsets.UTF_8.name())) {
+			while(sc.hasNextLine()) {
+				words2.add(sc.nextLine());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for(String line : words2) {
+			String[] split = line.split(",");
+			if (split[0].equals(play.getUsername())) {
+				previous = true;
+			}
+		}
+		return previous;
+	}
+
+	//This method writes a letter cryptogram to a text file
+	public static void writeToLetterCryptogramFile(Cryptogram currCrypto, Player play){
+		char[] encryption = currCrypto.getEncryption();
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt", true));
+			bw.append(play.getUsername());
+			bw.append(",");
+			for (int i = 0; i < encryption.length; i++) {
+				bw.append(encryption[i]);
+			}
+			bw.append(",");
+			for (int i = 0; i < playerGuess.length; i++) {
+				bw.append(String.valueOf(playerGuess[i]));
+			}
+			bw.append(",");
+			bw.append(currCrypto.phrase);
+			bw.newLine();
+			bw.close();
+		} catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+	}
+
+	//This method writes a number cryptogram to a text file
+	public static void writeToNumberCryptogramFile(Cryptogram currCrypto, Player play){
+		int[] encryption = currCrypto.getIntEncryption();
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt", true));
+			bw.append(play.getUsername());
+			bw.append(",");
+			for (int i = 0; i < playerGuess.length; i++) {
+				bw.append(String.valueOf(playerGuess[i]));
+			}
+			bw.append(",");
+			bw.append(currCrypto.phrase);
+			bw.append(",");
+			for (int i = 0; i < encryption.length; i++) {
+				bw.append(String.valueOf(encryption[i]));
+				bw.append(",");
+			}
+			bw.newLine();
+			bw.close();
+		} catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+	}
+
+	//This method loads the user's previous save if it exists
+	public static void loadGame(Cryptogram currCrypto, Player play) {
+		boolean display = true;
+
+		readLetterCryptogramsFile(currCrypto, play, display);
+		readNumberCryptogramsFile(currCrypto, play, display);
+	}
+
+	//This method read the letter cryptograms file
+	public static void readLetterCryptogramsFile(Cryptogram currCrypto, Player play, boolean display){
+		File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
+		List<String> words = new ArrayList<String>();
+		try(Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
+			while(sc.hasNextLine()) {
+				words.add(sc.nextLine());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for(String line : words){
+			String [] split = line.split(",");
+			if (split[0].equals(play.getUsername())) {
+				//String loadUsername = split[0];
+				String loadPuzzle = split[1];
+				String loadGuess = split[2];
+				String loadSolution = split[3];
+				char[] ch1 = new char[loadPuzzle.length()];
+				for (int i = 0; i < loadPuzzle.length(); i++) {
+					ch1[i] = loadPuzzle.charAt(i);
+				}
+				char[] ch2 = new char[loadGuess.length()];
+				for (int i = 0; i < loadGuess.length(); i++) {
+					ch2[i] = loadGuess.charAt(i);
+				}
+				if(display) {
+					currCrypto.phrase = loadSolution;
+					currCrypto.encryptedPhrase = ch1;
+					playerGuess = ch2;
+
+					System.out.println("Encoded phrase: ");
+					System.out.println(loadPuzzle);
+
+					System.out.println("Current guess: ");
+					System.out.println(loadGuess);
+				}
+			}
+		}
+	}
+
+	//This method read the number cryptograms file
+	public static void readNumberCryptogramsFile(Cryptogram currCrypto, Player play, boolean display) {
+		File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
+		List<String> words = new ArrayList<String>();
+		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
+			while (sc.hasNextLine()) {
+				words.add(sc.nextLine());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		for (String line : words) {
+			String[] split = line.split(",");
+			if (split[0].equals(play.getUsername())) {
+				//String loadUsername = split[0];
+				String loadGuess = split[1];
+				String loadSolution = split[2];
+				int[] ch1 = new int[loadSolution.length()];
+				for (int i = 0; i < loadSolution.length(); i++) {
+					ch1[i] = Integer.parseInt(split[i + 3]);
+				}
+				char[] ch2 = new char[loadGuess.length()];
+				for (int i = 0; i < loadGuess.length(); i++) {
+					ch2[i] = loadGuess.charAt(i);
+				}
+
+				if(display) {
+					currCrypto.phrase = loadSolution;
+					currCrypto.intEncryptedPhrase = ch1;
+					playerGuess = ch2;
+
+					System.out.println("Encoded phrase: ");
+					for (int i = 0; i < loadSolution.length(); i++) {
+						System.out.print(ch1[i]);
+						System.out.print(" ");
+					}
+
+					System.out.println("");
+					System.out.println("Current guess: ");
+					System.out.println(loadGuess);
+				}
+			}
+		}
 	}
 	
 	public void showSolution() {
@@ -277,7 +619,7 @@ public class Game {
 		System.out.println("2 - numerical cryptogram");
 		System.out.println("--------------------------------------------------------");
 		// Scanner reads the next integer and creates the specified Cryptogram 
-		System.out.print("which action would you like to carry out? ");  
+		System.out.print("which action would you like to carry out? ");
 		int input = sc.nextInt();  
 		sc.nextLine();
 		if (input == 1 || input == 2) { 
@@ -345,8 +687,15 @@ public class Game {
 				// Carries out the undoLetter method - allowing players to remove letters from their solution
 				undoLetter(sc);
 				break;
+
+				case 5:
+					saveGame(currCrypto, play, sc);
+					break;
+				case 6:
+					loadGame(currCrypto, play);
+					break;
 			case 7:
-				// Exits the program 
+				// Exits the program
 				System.out.println("Now exiting...");
 				complete = true;
 				break;
