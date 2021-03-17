@@ -9,6 +9,8 @@ public class Game {
 	static boolean complete = false;
 	// This character array stores the current player's answer and updates when they guess or remove a letter
 	static char[] playerGuess;
+	//
+	static int intTypeCrypto = 0;
 	
 	//public Game(Player p, int cryptoType) {
 	//}
@@ -118,25 +120,22 @@ public class Game {
 	    // then the playerGuess variable is updated
 		 int location = 0;
 		 int replacementNo = 0;
-		    for (int i = 0; i < encryption.length; i++ ) {
-		    		if (encryption[i] == replacer) {
-		    			playerGuess[i] = guess;
-		    			location = i;
-		    			replacementNo++;
-		    		}
-		    }
-		    // Prints an error if the player tried to replace an absent letter
-		    if (replacementNo == 0) {
-		    	System.out.println("The letter you tried to replace was not in the puzzle");
-		    }
-		    // Updates the players stats based on whether the guess was correct or not
-		    if (temp[location] == guess) {
-		    	play.incrementCorrGuesses();
-		    	play.incrementGuesses();
-		    }
-		    else {
-		    	play.incrementGuesses();
-		    }
+		 for (int i = 0; i < encryption.length; i++ ) {
+		 	if (encryption[i] == replacer) {
+		 		playerGuess[i] = guess;
+		 		location = i;
+		 		replacementNo++;
+		 	}
+		 }
+		 // Prints an error if the player tried to replace an absent letter
+		if (replacementNo == 0) {
+			System.out.println("The letter you tried to replace was not in the puzzle");
+		}
+		// Updates the players stats based on whether the guess was correct or not
+		if (temp[location] == guess) {
+			play.incrementCorrGuesses();
+		}
+		play.incrementGuesses();
 	}
 	
 	// Method for guessing a number within a numerical Cryptogram
@@ -512,14 +511,12 @@ public class Game {
 
 	//This method loads the user's previous save if it exists
 	public static void loadGame(Cryptogram currCrypto, Player play) {
-		boolean display = true;
-
-		readLetterCryptogramsFile(currCrypto, play, display);
-		readNumberCryptogramsFile(currCrypto, play, display);
+		readLetterCryptogramsFile(currCrypto, play);
+		readNumberCryptogramsFile(currCrypto, play);
 	}
 
 	//This method read the letter cryptograms file
-	public static void readLetterCryptogramsFile(Cryptogram currCrypto, Player play, boolean display){
+	public static void readLetterCryptogramsFile(Cryptogram currCrypto, Player play){
 		File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
 		List<String> words = new ArrayList<String>();
 		try(Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
@@ -532,7 +529,7 @@ public class Game {
 		for(String line : words){
 			String [] split = line.split(",");
 			if (split[0].equals(play.getUsername())) {
-				//String loadUsername = split[0];
+				intTypeCrypto=0;
 				String loadPuzzle = split[1];
 				String loadGuess = split[2];
 				String loadSolution = split[3];
@@ -544,23 +541,22 @@ public class Game {
 				for (int i = 0; i < loadGuess.length(); i++) {
 					ch2[i] = loadGuess.charAt(i);
 				}
-				if(display) {
-					currCrypto.phrase = loadSolution;
-					currCrypto.encryptedPhrase = ch1;
-					playerGuess = ch2;
+				currCrypto.phrase = loadSolution;
+				currCrypto.encryptedPhrase = ch1;
+				playerGuess = ch2;
 
-					System.out.println("Encoded phrase: ");
-					System.out.println(loadPuzzle);
+				System.out.println("Encoded phrase: ");
+				System.out.println(loadPuzzle);
 
-					System.out.println("Current guess: ");
-					System.out.println(loadGuess);
-				}
+				System.out.println("Current guess: ");
+				System.out.println(loadGuess);
 			}
 		}
 	}
 
+
 	//This method read the number cryptograms file
-	public static void readNumberCryptogramsFile(Cryptogram currCrypto, Player play, boolean display) {
+	public static void readNumberCryptogramsFile(Cryptogram currCrypto, Player play) {
 		File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
 		List<String> words = new ArrayList<String>();
 		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
@@ -574,7 +570,7 @@ public class Game {
 		for (String line : words) {
 			String[] split = line.split(",");
 			if (split[0].equals(play.getUsername())) {
-				//String loadUsername = split[0];
+				intTypeCrypto=1;
 				String loadGuess = split[1];
 				String loadSolution = split[2];
 				int[] ch1 = new int[loadSolution.length()];
@@ -586,21 +582,21 @@ public class Game {
 					ch2[i] = loadGuess.charAt(i);
 				}
 
-				if(display) {
-					currCrypto.phrase = loadSolution;
-					currCrypto.intEncryptedPhrase = ch1;
-					playerGuess = ch2;
 
-					System.out.println("Encoded phrase: ");
-					for (int i = 0; i < loadSolution.length(); i++) {
-						System.out.print(ch1[i]);
-						System.out.print(" ");
-					}
+				currCrypto.phrase = loadSolution;
+				currCrypto.intEncryptedPhrase = ch1;
+				playerGuess = ch2;
 
-					System.out.println("");
-					System.out.println("Current guess: ");
-					System.out.println(loadGuess);
+				System.out.println("Encoded phrase: ");
+				for (int i = 0; i < loadSolution.length(); i++) {
+					System.out.print(ch1[i]);
+					System.out.print(" ");
 				}
+
+				System.out.println("");
+				System.out.println("Current guess: ");
+				System.out.println(loadGuess);
+
 			}
 		}
 	}
@@ -625,6 +621,11 @@ public class Game {
 		sc.nextLine();
 		if (input == 1 || input == 2) { 
 			generateCryptogram(sc, input, play);
+			if (input == 1){
+				intTypeCrypto = 0;
+			}else{
+				intTypeCrypto = 1;
+			}
 		}
 		// If the input it read was not of the two digits, it gives an error
 		else {
@@ -677,7 +678,7 @@ public class Game {
 			switch (input) {
 			case 1: 
 				// Carries out the enterLetter method, depending on the type of Cryptogram created 
-				if (currCrypto instanceof alphabeticalCrypto) {
+				if (intTypeCrypto==0) {
 					enterLetterAlpha(sc, currCrypto, play);
 				}
 				else {
