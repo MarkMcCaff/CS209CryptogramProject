@@ -44,7 +44,7 @@ public class Game {
 			commandList(sc, cryptogram, play);
 		}
 		// Increments the number of cryptograms a player has played when one is generated 
-		play.incremementCryptogramsPlayed();
+		play.incrementCryptogramsPlayed();
 	}
 	
 	// Method for guessing a letter within an alphabetical Cryptogram
@@ -93,7 +93,7 @@ public class Game {
 	    if (wrong == 0) {
 	    	System.out.println("Congratulations! You got the answer!");	
 	    	
-	    	play.incremementCryptogramsCompleted();
+	    	play.incrementCryptogramsCompleted();
 	    	System.exit(0);
 	    }
 	    int entries = 0;
@@ -182,7 +182,7 @@ public class Game {
 	    }
 	    if (wrong == 0) {
 	    	System.out.println("Congratulations! You got the answer!");
-	    	play.incremementCryptogramsCompleted();
+	    	play.incrementCryptogramsCompleted();
 	    	System.exit(0);
 	    }
 	    int entries = 0;
@@ -223,11 +223,8 @@ public class Game {
 		// Updates the players stats based on whether the guess was correct or not
 		if (temp[location] == guess) {
 			play.incrementCorrGuesses();
-			play.incrementGuesses();
 		}
-		else {
-			play.incrementGuesses();
-		}
+		play.incrementGuesses();
 	}
 	
 	// Method for removing a player's answer from their current solution 
@@ -611,6 +608,8 @@ public class Game {
 		System.out.println("Please enter your username: ");
 		String name = sc.nextLine();
 		Player play = new Player(name);
+		play.addPlayer(play);
+		play.savePlayers(play,sc);
 		System.out.println("--------------------------------------------------------");
 		System.out.println("Welcome " + name + ", the following digits correspond to the specified action:");
 		System.out.println("1 - alphabetical cryptogram");
@@ -644,7 +643,8 @@ public class Game {
 		System.out.println("4 - Show the solution");
 		System.out.println("5 - Save cryptogram");
 		System.out.println("6 - Load cryptogram");
-		System.out.println("7 - Exit");
+		System.out.println("7 - View player details");
+		System.out.println("8 - Exit");
 		System.out.println("--------------------------------------------------------");
 		commandInput(sc, currCrypto, play);
 	}
@@ -685,19 +685,31 @@ public class Game {
 				else {
 					enterLetterNumber(sc, currCrypto, play);
 				}
+				play.savePlayers(play,sc);
 				break;
 			case 2:
 				// Carries out the undoLetter method - allowing players to remove letters from their solution
 				undoLetter(sc);
+				play.savePlayers(play,sc);
 				break;
 
 				case 5:
 					saveGame(currCrypto, play, sc);
+					play.savePlayers(play,sc);
 					break;
 				case 6:
 					loadGame(currCrypto, play);
+					play.savePlayers(play,sc);
 					break;
-			case 7:
+				case 7:
+					System.out.println("Username: " + play.getUsername());
+					System.out.println("Total Guesses: " + play.getGuesses());
+					System.out.println("Correct Guesses: " + play.getCorrectGuesses());
+					System.out.println("Accuracy: " + play.getAccuracy());
+					System.out.println("Cryptograms Played: " + play.getNumCryptogramsPlayed());
+					System.out.println("CryptogramsCompleted: " + play.getNumCryptogramsCompleted());
+					break;
+			case 8:
 				// Exits the program
 				System.out.println("Now exiting...");
 				complete = true;

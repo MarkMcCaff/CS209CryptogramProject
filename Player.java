@@ -1,4 +1,4 @@
-public class Player {
+public class Player extends Players {
 	
 	private String username;
 	private int accuracy;
@@ -9,16 +9,18 @@ public class Player {
 	
 	public Player(String name) {
 		username = name;
+		accuracy = 0;
 		totalGuesses = 0;
+		correctGuesses = 0;
 		cryptogramsPlayed = 0;
 		cryptogramsCompleted = 0;
 	}
 	
-	public void incremementCryptogramsCompleted() {
+	public void incrementCryptogramsCompleted() {
 		cryptogramsCompleted++;
 	}
 	
-	public void incremementCryptogramsPlayed() {
+	public void incrementCryptogramsPlayed() {
 		cryptogramsPlayed++;
 	}
 	
@@ -27,12 +29,14 @@ public class Player {
 	}
 	
 	public void incrementCorrGuesses() {
-		totalGuesses++;
 		correctGuesses++;
 	}
 	
-	public int getAccuracy() {
-		return ((correctGuesses / totalGuesses) * 100);
+	public double getAccuracy() {
+		if (totalGuesses!=0) {
+			accuracy = (correctGuesses / totalGuesses) * 100;
+		}
+		return accuracy;
 	}
 	
 	public int getNumCryptogramsCompleted() {
