@@ -15,9 +15,9 @@ public class Players extends Player{
 
 	}
 
-	public static ArrayList <String> playerList;
+	public ArrayList <String> playerList;
 
-
+/*
     public void addPlayer(Player p, Scanner sc){
         System.out.println("Enter your desired username: ");
         String newUserName = sc.next();
@@ -26,50 +26,89 @@ public class Players extends Player{
             myWriter.write(newUserName);
             myWriter.close();
             System.out.println("Successfully created new player: " + newUserName); 
-/*    	catch(IOException e) {
+    	catch(IOException e) {
                 System.out.println("An error occurred.");
                 e.printStackTrace(); 
-            } */
-        }
-    }
-/*
-
-    public void savePlayers(Player play, Scanner sc) {
-    	//boolean previousSave = previousSave(play);
-        if (Game.savegame()) {
-            File myObj = new File("C:\\Users\\alex\\Desktop\\players.txt");
-            for(int i = 0; i < playerList.length; i++) {
-                if(playerList[i] = username) {
-                    // overwrite the stored data for the user with new data
-                }
-                else {
-                    myWriter.write(username + cryptogramsCompleted + cryptogramsPlayed + correctGuesses );
-                    myWriter.close();
-                }
-
-            }
-        }
-
-    }
-
-
-
-    public void findPlayer(Player p) {
-        try {
-            File myObj = new File("C:\\Users\\alex\\Desktop\\players.txt");
-            playerList = new ArrayList<String>();
-            Scanner sc = new Scanner(myObj);
-            while (sc.hasNextLine()) {
-                String username = sc.nextLine();
-                playerList.add(username);
-            }
-            sc.close();
-            if (playerList.isEmpty()) {
-                System.out.println("No users exist - try creating a new one");
-                System.exit(0);
-            }
+            } 
         }
     } */
+
+
+	public void addPlayer(Player play, Scanner sc) {
+		System.out.println("Enter your username: ");
+		String newUsername = sc.next();
+		try {
+			for(int i = 0; i < playerList.size(); i++) {
+				if(newUsername = playerList.get(newUsername)) {
+				System.out.println("Signed in as: " + newUsername);
+				}
+			} 
+		
+		else {
+			play.getUsername() = newUsername;
+			writeToFile(play);
+			System.out.println("New user: " + newUsername);
+			}
+		
+		catch(IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace(); 
+		
+		} 
+	}
+
+    
+     public static void readSavedPlayers(Player play) {
+    	List<String> data = new ArrayList<String>();
+
+    	try {
+    	File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedPlayers.txt");
+    	Scanner sc = new Scanner(myObj);
+    		while (sc.hasNextLine()) {
+    		data.add(sc.nextLine());
+    		}
+    	} 	
+    	catch (FileNotFoundException e) {
+    	      	System.out.println("An error occurred.");
+    	      	e.printStackTrace();
+    	    }
+    	    for(String line : data){
+    			String [] split = line.split(",");
+    			if (split[0].equals(play.getUsername())) {
+    				String accuracy = split[1];
+    				String totalGuesses = split[2];
+    				String correctGuesses = split[3];
+    				String cryptogramsPlayed = split[4];
+    				String cryptogramsCompleted = split[5];
+    				
+    			}
+    	    }
+    }
+     
+     //This method checks whether the user has any saved data
+   	public static boolean findPlayer(Player play) {
+   		boolean existingPlayer = false;
+
+   		File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedPlayers.txt");
+   		List<String> words = new ArrayList<String>();
+   		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
+   			while (sc.hasNextLine()) {
+   				words.add(sc.nextLine());
+   			}
+   		} catch (IOException e) {
+   			e.printStackTrace();
+   		}
+   		for (String line : words) {
+   			String[] split = line.split(",");
+   			if (split[0].equals(play.getUsername())) {
+   				existingPlayer = true;
+   			System.out.println("You have signed in as " + play.getUsername());
+   			}
+   		}
+   
+   		return existingPlayer;
+   	}
+   	
 	
 	public static void savePlayers(Player play, Scanner sc) {
 		boolean previousSave = findPlayer(play);
@@ -89,13 +128,19 @@ public class Players extends Player{
 			}else{
 				writeToFile(play);
 				System.out.println("Your player info has been saved.");
+				System.out.println("Username: " + play.getUsername());
+				System.out.println("Accuracy: " + play.getAccuracy());
+				System.out.println("Total Guesses: " + play.getGuesses());
+				System.out.println("Correct Guesses: " + play.getCorrectGuesses());
+				System.out.println("Cryptograms Played: " + play.getNumCryptogramsPlayed());
+				System.out.println("CryptogramsCompleted: " + play.getNumCryptogramsCompleted());
+
+
 			}
 		
 			
 	}
-		
-	
-   
+
     public static void overwrite(Player play) {
 		File myObj1 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedPlayers.txt");
 		List<String> words1 = new ArrayList<String>();
@@ -166,28 +211,6 @@ public class Players extends Player{
 		}
     }
     
-  //This method checks whether the user has any previous saves
-  	public static boolean findPlayer(Player play) {
-  		boolean previous = false;
-
-  		File myObj1 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedPlayers.txt");
-  		List<String> words1 = new ArrayList<String>();
-  		try (Scanner sc = new Scanner((myObj1), StandardCharsets.UTF_8.name())) {
-  			while (sc.hasNextLine()) {
-  				words1.add(sc.nextLine());
-  			}
-  		} catch (IOException e) {
-  			e.printStackTrace();
-  		}
-  		for (String line : words1) {
-  			String[] split = line.split(",");
-  			if (split[0].equals(play.getUsername())) {
-  				previous = true;
-  			}
-  		}
-  
-  		return previous;
-  	}
   	
   	public static void writeToFile(Player play){
   		try {
@@ -209,31 +232,6 @@ public class Players extends Player{
   			System.out.println("An error occurred.");
   			e.printStackTrace();
   		}
-  	}
+  	} 
 		
-
-
-	public static void readSavedPlayers( Player play){
-		File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedPlayers.txt");
-		List<String> words = new ArrayList<String>();
-		try(Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
-			while(sc.hasNextLine()) {
-				words.add(sc.nextLine());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		for(String line : words){
-			String [] split = line.split(",");
-			if (split[0].equals(play.getUsername())) {
-				String accuracy = split[1];
-				String totalGuesses = split[2];
-				String correctGuesses = split[3];
-				String cryptogramsPlayed = split[4];
-				String cryptogramsCompleted = split[5];
-				
-				
-			}
-		}
-	}
 }
