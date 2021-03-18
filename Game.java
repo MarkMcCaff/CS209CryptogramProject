@@ -223,6 +223,7 @@ public class Game {
 		// Updates the players stats based on whether the guess was correct or not
 		if (temp[location] == guess) {
 			play.incrementCorrGuesses();
+			play.incrementGuesses();
 		}
 		else {
 			play.incrementGuesses();
@@ -306,7 +307,7 @@ public class Game {
 		}
 	}
 
-	//Method for getting rid of user's previous save when the want to save a new crypto
+	//Method for getting rid of user's previous save when they want to save a new crypto
 	public static void overwrite(Cryptogram currCrypto, Player play) {
 		File myObj1 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
 		List<String> words1 = new ArrayList<String>();
