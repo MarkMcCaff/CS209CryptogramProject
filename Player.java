@@ -50,4 +50,8 @@ public class Player {
 	public String getUsername() {
 		return username;
 	}
+	
+	public int getCorrectGuesses() {
+		return correctGuesses;
+	}
 }
