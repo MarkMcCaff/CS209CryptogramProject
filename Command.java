@@ -1,6 +1,6 @@
 public class Command {
 	
-	private commandWord commandWord;
+    private commandWord commandWord;
 
     public Command(commandWord commandWord) {
         this.commandWord = commandWord;
