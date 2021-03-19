@@ -7,6 +7,11 @@ public class alphabeticalCrypto extends Cryptogram {
 		this.encrypt(phrase);
 	}
 	
+	public alphabeticalCrypto(String phrase, char[] encryptedPhrase) {
+		this.phrase = phrase;
+		this.encryptedPhrase = encryptedPhrase;
+	}
+	
 	// usedChars is used as referral to ensure duplicate characters have the same mapping
 	char[] usedChars = getPhrase().toCharArray();
 	// encChars stores the encrypted phrase 
