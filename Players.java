@@ -63,7 +63,7 @@ public class Players{
     	List<String> data = new ArrayList<String>();
 
     	try {
-    	File myObj = new File("filenname.txt");
+    	File myObj = new File("savedPlayers.txt");
     	Scanner sc = new Scanner(myObj);
     		while (sc.hasNextLine()) {
     		data.add(sc.nextLine());
@@ -98,7 +98,7 @@ public class Players{
    	public static boolean findPlayer(Player play) {
    		boolean existingPlayer = false;
 
-   		File myObj = new File("filename.txt");
+   		File myObj = new File("savedPlayers.txt");
    		List<String> words = new ArrayList<String>();
    		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
    			while (sc.hasNextLine()) {
@@ -129,7 +129,7 @@ public class Players{
 	}
 
     public static void overwrite(Player play) {
-		File myObj1 = new File("filename.txt");
+		File myObj1 = new File("savedPlayers.txt");
 		List<String> words1 = new ArrayList<String>();
 		List<String> loadUsername = new ArrayList<String>();
 		List<Double> accuracy = new ArrayList<Double>();
@@ -171,8 +171,8 @@ public class Players{
 			cryptogramsPlayed.remove(removeInt);
 			cryptogramsCompleted.remove(removeInt);
 			try {
-				FileWriter fw = new FileWriter("filename.txt");
-				BufferedWriter bw = new BufferedWriter(new FileWriter("filename.txt", true));
+				FileWriter fw = new FileWriter("savedPlayers.txt");
+				BufferedWriter bw = new BufferedWriter(new FileWriter("savedPlayers.txt", true));
 				fw.write("");
 				for (int j = 0; j < loadUsername.size(); j++) {
 					bw.append(loadUsername.get(j));
@@ -200,7 +200,7 @@ public class Players{
     
   	public static void writeToFile(Player play){
   		try {
-  			BufferedWriter bw = new BufferedWriter(new FileWriter("filename.txt", true));
+  			BufferedWriter bw = new BufferedWriter(new FileWriter("savedPlayers.txt", true));
   			bw.append(play.getUsername());
 			bw.append(",");
 			bw.append(Double.toString(play.getAccuracy()));
