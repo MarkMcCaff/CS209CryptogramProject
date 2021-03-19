@@ -118,7 +118,7 @@ public class Players{
    	}
    	
 	
-	public void savePlayers(Player play, Scanner sc) {
+	public void savePlayers(Player play) {
 		boolean previousSave = findPlayer(play);
 		
 		if(previousSave) {
