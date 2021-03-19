@@ -89,11 +89,21 @@ public class sprint2Tests {
      @Test
      void savePlayer() {
          this.Player = new Player("testUser");
+         
+    	 Scanner sc1 = new Scanner(System.in);
+    	 Player.setUsername("testUser");
+    	 Player.setCorrectGuesses(10);
+    	 Player.setGuesses(20);
+    	 Player.setNumCryptogramsPlayed(5);
+    	 Player.setNumCryptogramsCompleted(1);
+    	 Player.setAccuracy(0.5);
+    	 
+         String user = "";
     		File myObj = new File("savedPlayers.txt");
        		List<String> words = new ArrayList<String>();
-       		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
-       			while (sc.hasNextLine()) {
-       				words.add(sc.nextLine());
+       		try (Scanner sc2 = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
+       			while (sc2.hasNextLine()) {
+       				words.add(sc2.nextLine());
        			}
        		} catch (IOException e) {
        			e.printStackTrace();
@@ -102,11 +112,11 @@ public class sprint2Tests {
        		for (String line : words) {
        			String[] split = line.split(",");
        			if (split[0].equals("testUser")) {
-       				String user = split[0];
+       				 user = split[0];
        				found = true;
        			}
        		}
-       assertEquals(split[0], "testUser");
+       assertEquals(user, "testUser");
        		
     }
 }
