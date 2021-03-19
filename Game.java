@@ -702,15 +702,21 @@ public class Game {
 	}
 	
 	public static void selectStat(int input, Player player) {
+		Player previousStats = Players.findUser(player.getUsername());
 		switch (input) {
 			case 1:
-				//System.out.println("You have made " + player.getGuesses() + " guesses. " + player.getCorrectGuesses() + " of which were right meaning you have an accuracy of " + player.getAccuracy() + "%");
+				int totalGuesses = player.getGuesses() + previousStats.getGuesses();
+				int correctGuesses = player.getCorrectGuesses() + previousStats.getCorrectGuesses();
+				double accuracy = ((double) correctGuesses / (double) totalGuesses) * 100;
+				System.out.println("You have made " + totalGuesses + " guesses. " + correctGuesses + " of which were right meaning you have an accuracy of " + accuracy + "%");
 				break;
 			case 2:
-				//System.out.println("You have played " + player.getNumCryptogramsPlayed() + " cryptograms");
+				int cryptogramsPlayed = player.getNumCryptogramsPlayed() + previousStats.getNumCryptogramsPlayed();
+				System.out.println("You have played " + cryptogramsPlayed + " cryptograms");
 				break;
 			case 3:
-				//System.out.println("You have completed " + player.getNumCryptogramsCompleted() + " cryptograms");
+				int cryptogramsCompleted = player.getNumCryptogramsCompleted() + previousStats.getNumCryptogramsCompleted();
+				System.out.println("You have completed " + cryptogramsCompleted + " cryptograms");
 				break;
 			default:
 				System.out.println("This was not a valid action");
