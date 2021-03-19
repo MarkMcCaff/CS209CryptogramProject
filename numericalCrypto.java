@@ -3,15 +3,15 @@ import java.util.Random;
 public class numericalCrypto extends Cryptogram {
 	
 	public numericalCrypto() {
-		this.getPhrase();
 		this.encrypt(phrase);
 	}
 	
+	// usedChars is used as referral to ensure duplicate characters have the same mapping
+	char[] usedChars = getPhrase().toCharArray();
+	// encChars stores the encrypted phrase 
+	int[] encChars = new int[usedChars.length];
+	
 	public void encrypt(String phrase) {
-		// usedChars is used as referral to ensure duplicate characters have the same mapping
-		char[] usedChars = phrase.toUpperCase().toCharArray();
-		// encChars stores the encrypted phrase 
-		int[] encChars = new int[usedChars.length];
 		for (int i = 0; i < phrase.length(); i++) {
 			// If the phrase has an empty space, the puzzle shows this through a 0 (for now) as it's impossible for 
 			// this to be mapped to.
@@ -19,37 +19,58 @@ public class numericalCrypto extends Cryptogram {
 				encChars[i] = 0;
 			}
 			else {
-				// Generates random numbers
-				Random r = new Random();
-				int low = 1;
-				int high = 27;
-				int result = r.nextInt(high - low) + low;
-				// If already used in a mapping, another random number is chosen 
-				for (int j = 0; j < encChars.length; j++) {
-					if (encChars[j] == result) {
-						while (encChars[j] == result) {
-							result = r.nextInt(high-low) + low;
-						}
-					}
-				}
-				// Base case - first entry has nothing to compare to so it can always be set
-				if (i == 0) {
-					encChars[i] = result;
-				}
-				// Compares an element with all of the previous elements 
-				for (int j = 0; j < i; j++) { 
-					// If it appeared previously, the mapping is copied 
-					if (usedChars[i] == usedChars[j]) {
-						encChars[i] = encChars[j];
-						break;
-					}
-					// Otherwise a new mapping is made
-					else {
-						encChars[i] = result;
-					}
-				}	
+				compareElements(i);
 			}
 		}
+		printMapping();
+	}
+	
+	public void compareElements(int position) {
+		int mappingNumber = verifyNumber();
+		// Base case - first entry has nothing to compare to so it can always be set
+		if (position == 0) {
+			encChars[position] = mappingNumber;
+		}
+		// Compares an element with all of the previous elements 
+		for (int j = 0; j < position; j++) { 
+			// If it appeared previously, the mapping is copied 
+			if (usedChars[position] == usedChars[j]) {
+				encChars[position] = encChars[j];
+				break;
+			}
+			// Otherwise a new mapping is made
+			else {
+				encChars[position] = mappingNumber;
+			}
+		}
+	}
+	
+	// creates and verifies a number to make sure it hasn't already been mapped
+	public int verifyNumber() {
+		int result = randomNum();
+		// If already used in a mapping, another random number is chosen 
+		for (int j = 0; j < encChars.length; j++) {
+			if (encChars[j] == result) {
+				while (encChars[j] == result) {
+					// generates random number until it hasn't been used already
+					result = randomNum();
+				}
+			}
+		}
+		return result;
+	}
+	
+	// method for generating a random number
+	public int randomNum() {
+		Random r = new Random();
+		// low and high numbers are set as according to the alphabet
+		int low = 1;
+		int high = 27;
+		return r.nextInt(high - low) + low;
+	}
+	
+	// method for printing the mapping
+	private void printMapping() {
 		// Prints the results of the mapping
 		System.out.print("Encoded phrase: ");
 		for (int i = 0; i < encChars.length; i++) {

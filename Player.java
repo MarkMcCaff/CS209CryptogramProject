@@ -1,4 +1,4 @@
-public class Player extends Players {
+public class Player {
 	
 	private String username;
 	private double accuracy;
@@ -9,18 +9,17 @@ public class Player extends Players {
 	
 	public Player(String name) {
 		username = name;
-		accuracy = getAccuracy();
-		totalGuesses = getGuesses();
-		correctGuesses = getCorrectGuesses();
-		cryptogramsPlayed = getNumCryptogramsPlayed();
-		cryptogramsCompleted = getNumCryptogramsCompleted();
+		accuracy = 0;
+		totalGuesses = 0;
+		cryptogramsPlayed = 0;
+		cryptogramsCompleted = 0;
 	}
 	
-	public void incrementCryptogramsCompleted() {
+	public void incremementCryptogramsCompleted() {
 		cryptogramsCompleted++;
 	}
 	
-	public void incrementCryptogramsPlayed() {
+	public void incremementCryptogramsPlayed() {
 		cryptogramsPlayed++;
 	}
 	
@@ -29,56 +28,54 @@ public class Player extends Players {
 	}
 	
 	public void incrementCorrGuesses() {
+		totalGuesses++;
 		correctGuesses++;
 	}
 	
 	public double getAccuracy() {
-		if (totalGuesses!=0) {
-			accuracy = ((Double.valueOf(correctGuesses)) / (Double.valueOf(totalGuesses))) * 100;
-		}
-		return accuracy;
+		return (((double) correctGuesses / (double) totalGuesses) * 100);
+	}
+	
+	public void setAccuracy(double set) {
+		accuracy = set;
 	}
 	
 	public int getNumCryptogramsCompleted() {
 		return cryptogramsCompleted;
 	}
 	
+	public void setNumCryptogramsCompleted(int set) {
+		cryptogramsCompleted = set;
+	}
+	
 	public int getNumCryptogramsPlayed() {
 		return cryptogramsPlayed;
 	}
 	
+	public void setNumCryptogramsPlayed(int set) {
+		cryptogramsPlayed = set;
+	}
+	
 	public int getGuesses() {
 		return totalGuesses;
+	}
+	
+	public void setGuesses(int set) {
+		totalGuesses = set;
 	}
 
 	public String getUsername() {
 		return username;
 	}
 	
+	public void setUsername(String name) {
+		username = name;
+	}
+	
 	public int getCorrectGuesses() {
 		return correctGuesses;
 	}
-
-	public void setAccuracy(double set) {
-		accuracy = set;
-	}
-
-	public void setNumCryptogramsCompleted(int set) {
-		cryptogramsCompleted = set;
-	}
-
-	public void setNumCryptogramsPlayed(int set) {
-		cryptogramsPlayed = set;
-	}
-
-	public void setGuesses(int set) {
-		totalGuesses = set;
-	}
-
-	public void setUsername(String set) {
-		username = set;
-	}
-
+	
 	public void setCorrectGuesses(int set) {
 		correctGuesses = set;
 	}

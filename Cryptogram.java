@@ -10,34 +10,39 @@ public class Cryptogram {
 	public int frequency;
 	public char[] encryptedPhrase;
 	public int[] intEncryptedPhrase;
-	public ArrayList<String> phrases;
+	public ArrayList<String> phraseList;
 	
 	public Cryptogram() {
+		this.readFile();
 		this.createPhrase();
 	}
 	
-	// reads a phrase (currently only one) from a text file
+	// exits if there's no phrases found or chooses a random phrase
 	public void createPhrase() {
-		try {
-			File myObj = new File("phrases.txt");
-			phrases = new ArrayList<String>();
-			Scanner sc = new Scanner(myObj);
-				while (sc.hasNextLine()) {
-					String data = sc.nextLine();
-					phrases.add(data);
-				}
-			sc.close();
-			if (phrases.isEmpty()) {
+			if (phraseList.isEmpty()) {
 				System.out.println("No phrases detected - Now exiting...");
 				System.exit(0);
 			}
 			// Creates a random number to choose the phrase 
 			Random r = new Random();
 			int low = 0;
-			int high = phrases.size();
+			int high = phraseList.size();
 			int result = r.nextInt(high - low) + low;
-			phrase = phrases.get(result);
+			phrase = phraseList.get(result);
 		}
+	
+	// reads phrases from from a text file and stores them into an ArrayList
+	public void readFile() {
+		try {
+			File myObj = new File("filename.txt");
+			phraseList = new ArrayList<String>();
+			Scanner sc = new Scanner(myObj);
+			while (sc.hasNextLine()) {
+				String data = sc.nextLine().toUpperCase();
+				phraseList.add(data);
+			}
+			sc.close();
+		}	
 		catch (FileNotFoundException e) {
 			System.out.println("An error occurred.");
 		}
