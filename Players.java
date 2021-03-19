@@ -3,7 +3,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
-public class Players{
+public class Players {
 	//static ArrayList <String> playerList;
 	static String username;
 	static Double accuracy;
@@ -57,48 +57,62 @@ public class Players{
 		}
 	}
 
-
+	public static Player findUser(String username) {
+		Player foundPlayer = new Player();
+		List<String> data = createPlayerList();
+		for(String line : data){
+			String [] split = line.split(",");
+			if (split[0].equals(username)) {
+				foundPlayer = new Player(split[0], Integer.parseInt(split[2]), Integer.parseInt(split[3]), Integer.parseInt(split[4]), Integer.parseInt(split[5]));
+			}
+		}
+		return foundPlayer;
+    }
     
-     public static void readSavedPlayers(Player play) {
-    	List<String> data = new ArrayList<String>();
-
+	public static List<String> createPlayerList() {
+		List<String> data = new ArrayList<String>();
     	try {
-    	File myObj = new File("savedPlayers.txt");
-    	Scanner sc = new Scanner(myObj);
+    		File myObj = new File("C:\\Users\\scott\\Desktop\\savedPlayers.txt");
+    		Scanner sc = new Scanner(myObj);
     		while (sc.hasNextLine()) {
-    		data.add(sc.nextLine());
+    			data.add(sc.nextLine());
     		}
-    	} catch (FileNotFoundException e) {
-    	      	System.out.println("An error occurred.");
-    	      	e.printStackTrace();
-    	    }
-    	count = 0;
-    	    for(String line : data){
-    			String [] split = line.split(",");
-    			if (split[0].equals(play.getUsername())) {
-    				username = split[0];
-    				play.setUsername(split[0]);
-    				accuracy = Double.parseDouble(split[1]);
-					play.setAccuracy(Double.parseDouble(split[1]));
-    				totalGuesses = Integer.parseInt(split[2]);
-					play.setGuesses(Integer.parseInt(split[2]));
-    				correctGuesses = Integer.parseInt(split[3]);
-					play.setCorrectGuesses(Integer.parseInt(split[3]));
-    				cryptogramsPlayed = Integer.parseInt(split[4]);
-					play.setNumCryptogramsPlayed(Integer.parseInt(split[4]));
-    				cryptogramsCompleted = Integer.parseInt(split[5]);
-					play.setNumCryptogramsCompleted(Integer.parseInt(split[5]));
-    				
-    			}
-    			count++;
-    	    }
+    	}
+    	catch (FileNotFoundException e) {
+    		System.out.println("An error occurred.");
+    		e.printStackTrace();
+    	}
+    	return data;
+	}
+	
+     public static void readSavedPlayers(Player play) {
+    	 List<String> data = createPlayerList();
+    	 count = 0;
+    	 for(String line : data){
+    		 String [] split = line.split(",");
+    		 if (split[0].equals(play.getUsername())) {
+    			 username = split[0];
+    			 play.setUsername(split[0]);
+    			 accuracy = Double.parseDouble(split[1]);
+    			 play.setAccuracy(Double.parseDouble(split[1]));
+    			 totalGuesses = Integer.parseInt(split[2]);
+    			 play.setGuesses(Integer.parseInt(split[2]));
+    			 correctGuesses = Integer.parseInt(split[3]);
+    			 play.setCorrectGuesses(Integer.parseInt(split[3]));
+    			 cryptogramsPlayed = Integer.parseInt(split[4]);
+    			 play.setNumCryptogramsPlayed(Integer.parseInt(split[4]));
+    			 cryptogramsCompleted = Integer.parseInt(split[5]);
+    			 play.setNumCryptogramsCompleted(Integer.parseInt(split[5]));
+    		 }
+    		 count++;
+    	 }
     }
      
      //This method checks whether the user has any saved data
    	public static boolean findPlayer(Player play) {
    		boolean existingPlayer = false;
 
-   		File myObj = new File("savedPlayers.txt");
+   		File myObj = new File("C:\\Users\\scott\\Desktop\\savedPlayers.txt");
    		List<String> words = new ArrayList<String>();
    		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
    			while (sc.hasNextLine()) {
@@ -129,7 +143,7 @@ public class Players{
 	}
 
     public static void overwrite(Player play) {
-		File myObj1 = new File("savedPlayers.txt");
+		File myObj1 = new File("C:\\Users\\scott\\Desktop\\savedPlayers.txt");
 		List<String> words1 = new ArrayList<String>();
 		List<String> loadUsername = new ArrayList<String>();
 		List<Double> accuracy = new ArrayList<Double>();
@@ -171,8 +185,8 @@ public class Players{
 			cryptogramsPlayed.remove(removeInt);
 			cryptogramsCompleted.remove(removeInt);
 			try {
-				FileWriter fw = new FileWriter("savedPlayers.txt");
-				BufferedWriter bw = new BufferedWriter(new FileWriter("savedPlayers.txt", true));
+				FileWriter fw = new FileWriter("C:\\Users\\scott\\Desktop\\savedPlayers.txt");
+				BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedPlayers.txt", true));
 				fw.write("");
 				for (int j = 0; j < loadUsername.size(); j++) {
 					bw.append(loadUsername.get(j));
@@ -200,7 +214,7 @@ public class Players{
     
   	public static void writeToFile(Player play){
   		try {
-  			BufferedWriter bw = new BufferedWriter(new FileWriter("savedPlayers.txt", true));
+  			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedPlayers.txt", true));
   			bw.append(play.getUsername());
 			bw.append(",");
 			bw.append(Double.toString(play.getAccuracy()));

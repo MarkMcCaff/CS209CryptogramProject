@@ -8,7 +8,7 @@ public class Game {
 	// This character array stores the current player's answer and updates when they guess or remove a letter
 	static char[] playerGuess;
 	// Integer for the player to decide which Cryptogram to play
-	static int intTypeCrypto = 0;
+	static int intTypeCrypto;
 	static commandWords commands = new commandWords();
 
 	// Depending on the player's input, the desired Cryptogram will be generated
@@ -16,18 +16,18 @@ public class Game {
 		// Increments the number of cryptograms a player has played when one is generated 
 		play.incremementCryptogramsPlayed();
 		if (cryptoType == 1) {
-			intTypeCrypto = 0;
 			System.out.println("Alphabetical Cryptogram: ");
 			alphabeticalCrypto cryptogram = new alphabeticalCrypto();
 			System.out.println("Welcome! Type 'help' if you need help ");
-			commandInput(sc, cryptogram, play);
+			setupPlayerGuess(cryptogram);
+			commandInput(sc, cryptogram, play, playerGuess);
 		}
 		else if (cryptoType == 2) {
-			intTypeCrypto = 1;
 			System.out.println("Numerical Cryptogram: NOTE a 0 represents empty space!");
 			numericalCrypto cryptogram = new numericalCrypto();
 			System.out.println("Welcome! Type 'help' if you need help");
-			commandInput(sc, cryptogram, play);
+			setupPlayerGuess(cryptogram);
+			commandInput(sc, cryptogram, play, playerGuess);
 		}
 	}
 	
@@ -99,7 +99,9 @@ public class Game {
 		if (temp[location] == guess) {
 			play.incrementCorrGuesses();
 		}
-		play.incrementGuesses();
+		else { 
+			play.incrementGuesses();
+		}
 	}
 	
 	// Method for guessing a number within a numerical Cryptogram
@@ -162,7 +164,7 @@ public class Game {
 	    if (wrong == 0) {
 	    	System.out.println("Congratulations! You got the answer!");
 	    	play.incremementCryptogramsCompleted();
-			play.savePlayers(play);
+	    	play.savePlayers(play);
 	    	System.exit(0);
 	    }
 	    int entries = 0;
@@ -197,7 +199,6 @@ public class Game {
 		// Updates the players stats based on whether the guess was correct or not
 		if (temp[location] == guess) {
 			play.incrementCorrGuesses();
-			play.incrementGuesses();
 		}
 		else {
 			play.incrementGuesses();
@@ -243,7 +244,7 @@ public class Game {
 		System.out.println("2 - numerical cryptogram");
 		System.out.println("--------------------------------------------------------");
 		// Scanner reads the next integer and creates the specified Cryptogram 
-		System.out.print("which cryptogram would you like to create? ");
+		System.out.print("Which cryptogram would you like to create? ");
 		int input = sc.nextInt();  
 		sc.nextLine();
 		if (input == 1 || input == 2) { 
@@ -256,8 +257,7 @@ public class Game {
 	}
 	
 	// Method used to deal with the player's input from the commandList method 
-	public static void commandInput(Scanner sc, Cryptogram currCrypto, Player play) {
-		setupPlayerGuess(currCrypto);
+	public static void commandInput(Scanner sc, Cryptogram currCrypto, Player play, char[] playerGuess) {
 		// Loops until the player opts to exit 
 		while (!complete) {
 			System.out.print("> ");
@@ -270,7 +270,7 @@ public class Game {
 	                break;
 				case GUESS: 
 					// Carries out the enterLetter method, depending on the type of Cryptogram created 
-					if (intTypeCrypto==0) {
+					if (currCrypto instanceof alphabeticalCrypto) {
 						enterLetterAlpha(sc, currCrypto, play);
 					}
 					else {
@@ -285,16 +285,21 @@ public class Game {
 					saveGame(currCrypto, play, sc);
 					break;
 				case LOAD:
-					loadGame(currCrypto, play);
+					loadGame(currCrypto, play, sc);
 					break;
 				case EXIT:
 					// Exits the program
-					play.savePlayers(play);
 					System.out.println("Now exiting...");
 					complete = true;
 					break;
 				case HELP:
 					printHelp();
+					break;
+				case SOLUTION:
+					showSolution(currCrypto);
+					break;
+				case STATS:
+					showStatOptions(play, sc);
 					break;
 			}
 		}
@@ -341,6 +346,7 @@ public class Game {
 				System.out.println("Would you like to overwrite it? Y/N: ");
 				char ans = Character.toUpperCase(sc.next().charAt(0));
 				// If they answer yes, it's overwritten
+				sc.nextLine();
 				if (ans == 'Y') {
 					//Gets rid of the user's previous saved cryptogram
 					overwrite(currCrypto, play);
@@ -365,6 +371,7 @@ public class Game {
 				System.out.println("Would you like to overwrite it? Y/N: ");
 				char ans = Character.toUpperCase(sc.next().charAt(0));
 				// If they answer yes, it's overwritten
+				sc.nextLine();
 				if (ans == 'Y') {
 					overwrite(currCrypto, play);
 					writeToNumberCryptogramFile(currCrypto, play);
@@ -384,7 +391,7 @@ public class Game {
 
 	//Method for getting rid of user's previous save when they want to save a new crypto
 	public static void overwrite(Cryptogram currCrypto, Player play) {
-		File myObj1 = new File("savedLetterCryptos.txt");
+		File myObj1 = new File("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt");
 		List<String> words1 = new ArrayList<String>();
 		List<String> loadUsername = new ArrayList<String>();
 		List<String> loadPuzzle = new ArrayList<String>();
@@ -418,8 +425,8 @@ public class Game {
 			loadGuess.remove(removeInt);
 			loadSolution.remove(removeInt);
 			try {
-				FileWriter fw = new FileWriter("savedLetterCryptos.txt");
-				BufferedWriter bw = new BufferedWriter(new FileWriter("savedLetterCryptos.txt", true));
+				FileWriter fw = new FileWriter("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt");
+				BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt", true));
 				fw.write("");
 				for (int j = 0; j < loadUsername.size(); j++) {
 					bw.append(loadUsername.get(j));
@@ -440,7 +447,7 @@ public class Game {
 			}
 		}
 		else {
-			File myObj2 = new File("savedNumberCryptos.txt");
+			File myObj2 = new File("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt");
 			List<String> words2 = new ArrayList<String>();
 			List<String> loadIntUsername = new ArrayList<String>();
 			ArrayList<String> tempPuzzle = new ArrayList<String>();
@@ -475,8 +482,8 @@ public class Game {
 					loadIntGuess.remove(removeInt);
 					loadIntSolution.remove(removeInt);
 					try {
-						FileWriter fw = new FileWriter("savedNumberCryptos.txt");
-						BufferedWriter bw = new BufferedWriter(new FileWriter("savedNumberCryptos.txt", true));
+						FileWriter fw = new FileWriter("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt");
+						BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt", true));
 						fw.write("");
 						for (int j = 0; j < loadIntUsername.size(); j++) {
 							bw.append(loadIntUsername.get(j));
@@ -505,7 +512,7 @@ public class Game {
 	//This method checks whether the user has any previous saves
 	public static boolean previousSaveGame(Player play) {
 		boolean previous = false;
-		File myObj1 = new File("savedLetterCryptos.txt");
+		File myObj1 = new File("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt");
 		List<String> words1 = new ArrayList<String>();
 		try (Scanner sc = new Scanner((myObj1), StandardCharsets.UTF_8.name())) {
 			while (sc.hasNextLine()) {
@@ -521,7 +528,7 @@ public class Game {
 				previous = true;
 			}
 		}
-		File myObj2 = new File("savedNumberCryptos.txt");
+		File myObj2 = new File("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt");
 		List<String> words2 = new ArrayList<String>();
 		try(Scanner sc = new Scanner((myObj2), StandardCharsets.UTF_8.name())) {
 			while(sc.hasNextLine()) {
@@ -544,7 +551,7 @@ public class Game {
 	public static void writeToLetterCryptogramFile(Cryptogram currCrypto, Player play){
 		char[] encryption = currCrypto.getEncryption();
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("savedLetterCryptos.txt", true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt", true));
 			bw.append(play.getUsername());
 			bw.append(",");
 			for (int i = 0; i < encryption.length; i++) {
@@ -569,7 +576,7 @@ public class Game {
 	public static void writeToNumberCryptogramFile(Cryptogram currCrypto, Player play){
 		int[] encryption = currCrypto.getIntEncryption();
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("savedNumberCryptos.txt", true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt", true));
 			bw.append(play.getUsername());
 			bw.append(",");
 			for (int i = 0; i < playerGuess.length; i++) {
@@ -592,18 +599,28 @@ public class Game {
 	}
 
 	//This method loads the user's previous save if it exists
-	public static void loadGame(Cryptogram currCrypto, Player play) {
-		readLetterCryptogramsFile(currCrypto, play);
-		readNumberCryptogramsFile(currCrypto, play);
+	public static void loadGame(Cryptogram currCrypto, Player play, Scanner sc) {
+		File myObj = new File("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt");
+		if (myObj.length() != 0) {
+			readLetterCryptogramsFile(currCrypto, play, sc, myObj);
+		}
+		else {
+			myObj = new File("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt");
+			if (myObj.length() != 0) {
+				readNumberCryptogramsFile(currCrypto, play, sc, myObj);
+			}
+			else {
+				System.out.println("There was nothing to load...");
+			}
+		}
 	}
 
 	//This method read the letter cryptograms file
-	public static void readLetterCryptogramsFile(Cryptogram currCrypto, Player play){
-		File myObj = new File("savedLetterCryptos.txt");
+	public static void readLetterCryptogramsFile(Cryptogram currCrypto, Player play, Scanner sc, File myObj){
 		List<String> words = new ArrayList<String>();
-		try(Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
-			while(sc.hasNextLine()) {
-				words.add(sc.nextLine());
+		try(Scanner reader = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
+			while(reader.hasNextLine()) {
+				words.add(reader.nextLine());
 			}
 		}
 		catch (IOException e) {
@@ -612,36 +629,32 @@ public class Game {
 		for(String line : words){
 			String [] split = line.split(",");
 			if (split[0].equals(play.getUsername())) {
-				intTypeCrypto=0;
-				String loadPuzzle = split[1];
-				String loadGuess = split[2];
+				char[] encryption = split[1].toCharArray();
+				char[] loadGuess = split[2].toCharArray();
 				String loadSolution = split[3];
-				char[] ch1 = new char[loadPuzzle.length()];
-				for (int i = 0; i < loadPuzzle.length(); i++) {
-					ch1[i] = loadPuzzle.charAt(i);
+				playerGuess = new char[loadGuess.length];
+				currCrypto = new alphabeticalCrypto(loadSolution, encryption);
+				setupPlayerGuess(currCrypto);
+				for (int i = 0; i < loadGuess.length; i++) {
+						playerGuess[i] = loadGuess[i];
 				}
-				char[] ch2 = new char[loadGuess.length()];
-				for (int i = 0; i < loadGuess.length(); i++) {
-					ch2[i] = loadGuess.charAt(i);
+				System.out.print("Encoded phrase: ");
+				for (int i = 0; i < encryption.length; i++) {
+					System.out.print(encryption[i]);	
 				}
-				currCrypto.phrase = loadSolution;
-				currCrypto.encryptedPhrase = ch1;
-				playerGuess = ch2;
-				System.out.println("Encoded phrase: ");
-				System.out.println(loadPuzzle);
-				System.out.println("Current guess: ");
-				System.out.println(loadGuess);
+				System.out.println(" ");
+				currSolution();
 			}
 		}
+		commandInput(sc, currCrypto, play, playerGuess);
 	}
 
 	//This method read the number cryptograms file
-	public static void readNumberCryptogramsFile(Cryptogram currCrypto, Player play) {
-		File myObj = new File("savedNumberCryptos.txt");
+	public static void readNumberCryptogramsFile(Cryptogram currCrypto, Player play, Scanner sc, File myObj) {
 		List<String> words = new ArrayList<String>();
-		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
-			while (sc.hasNextLine()) {
-				words.add(sc.nextLine());
+		try (Scanner reader = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
+			while (reader.hasNextLine()) {
+				words.add(reader.nextLine());
 			}
 		}
 		catch (IOException e) {
@@ -650,34 +663,65 @@ public class Game {
 		for (String line : words) {
 			String[] split = line.split(",");
 			if (split[0].equals(play.getUsername())) {
-				intTypeCrypto=1;
-				String loadGuess = split[1];
+				char[] loadGuess = split[1].toCharArray();
 				String loadSolution = split[2];
-				int[] ch1 = new int[loadSolution.length()];
+				int[] encryption = new int[loadSolution.length()];
+				playerGuess = new char[loadGuess.length];
 				for (int i = 0; i < loadSolution.length(); i++) {
-					ch1[i] = Integer.parseInt(split[i + 3]);
+					encryption[i] = Integer.parseInt(split[i + 3]);
 				}
-				char[] ch2 = new char[loadGuess.length()];
-				for (int i = 0; i < loadGuess.length(); i++) {
-					ch2[i] = loadGuess.charAt(i);
-				}
-				currCrypto.phrase = loadSolution;
-				currCrypto.intEncryptedPhrase = ch1;
-				playerGuess = ch2;
+				currCrypto = new numericalCrypto(loadSolution, encryption);
+				playerGuess = loadGuess;
 				System.out.println("Encoded phrase: ");
 				for (int i = 0; i < loadSolution.length(); i++) {
-					System.out.print(ch1[i]);
+					System.out.print(encryption[i]);
 					System.out.print(" ");
 				}
 				System.out.println("");
-				System.out.println("Current guess: ");
-				System.out.println(loadGuess);
+				currSolution();
 			}
 		}
+		commandInput(sc, currCrypto, play, playerGuess);
 	}
 		
 	public static void showSolution(Cryptogram currCrypto) {
-		System.out.println("This is the solution: " + currCrypto.phrase);
+		System.out.println("The solution is: " + currCrypto.phrase);
+	}
+	
+	public static void showStatOptions(Player player, Scanner sc) {
+		System.out.println("--------------------------------------------------------");
+		System.out.println("The following digits correspond to your specified statistic:");
+		System.out.println("1 - information on guesses");
+		System.out.println("2 - number of cryptograms played");
+		System.out.println("3 - number of cryptograms completed");
+		System.out.println("--------------------------------------------------------");
+		System.out.print("Which statistic would you like to see? ");
+		int action = sc.nextInt();
+		selectStat(action, player);
+		sc.nextLine();
+	}
+	
+	public static void selectStat(int input, Player player) {
+		Player previousStats = Players.findUser(player.getUsername());
+		switch (input) {
+			case 1:
+				int totalGuesses = player.getGuesses() + previousStats.getGuesses();
+				int correctGuesses = player.getCorrectGuesses() + previousStats.getCorrectGuesses();
+				double accuracy = ((double) correctGuesses / (double) totalGuesses) * 100;
+				System.out.println("You have made " + totalGuesses + " guesses. " + correctGuesses + " of which were right meaning you have an accuracy of " + accuracy + "%");
+				break;
+			case 2:
+				int cryptogramsPlayed = player.getNumCryptogramsPlayed() + previousStats.getNumCryptogramsPlayed();
+				System.out.println("You have played " + cryptogramsPlayed + " cryptograms");
+				break;
+			case 3:
+				int cryptogramsCompleted = player.getNumCryptogramsCompleted() + previousStats.getNumCryptogramsCompleted();
+				System.out.println("You have completed " + cryptogramsCompleted + " cryptograms");
+				break;
+			default:
+				System.out.println("This was not a valid action");
+				break;
+		}
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {

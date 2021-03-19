@@ -6,6 +6,11 @@ public class numericalCrypto extends Cryptogram {
 		this.encrypt(phrase);
 	}
 	
+	public numericalCrypto(String phrase, int[] intEncryptedPhrase) {
+		this.phrase = phrase;
+		this.intEncryptedPhrase = intEncryptedPhrase;
+	}
+	
 	// usedChars is used as referral to ensure duplicate characters have the same mapping
 	char[] usedChars = getPhrase().toCharArray();
 	// encChars stores the encrypted phrase 
