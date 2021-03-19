@@ -1,4 +1,4 @@
-public class Player {
+public class Player extends Players {
 	
 	private String username;
 	private double accuracy;
