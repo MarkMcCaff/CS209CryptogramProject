@@ -8,7 +8,7 @@ public class Game {
 	// This character array stores the current player's answer and updates when they guess or remove a letter
 	static char[] playerGuess;
 	// Integer for the player to decide which Cryptogram to play
-	static int intTypeCrypto;
+	static int intTypeCrypto = 0;
 	static commandWords commands = new commandWords();
 
 	// Depending on the player's input, the desired Cryptogram will be generated
@@ -270,7 +270,7 @@ public class Game {
 	                break;
 				case GUESS: 
 					// Carries out the enterLetter method, depending on the type of Cryptogram created 
-					if (currCrypto instanceof alphabeticalCrypto) {
+					if (intTypeCrypto==0) {
 						enterLetterAlpha(sc, currCrypto, play);
 					}
 					else {
@@ -637,7 +637,7 @@ public class Game {
 
 	//This method read the number cryptograms file
 	public static void readNumberCryptogramsFile(Cryptogram currCrypto, Player play) {
-		File myObj = new File("saveNumberCryptos.txt");
+		File myObj = new File("savedNumberCryptos.txt");
 		List<String> words = new ArrayList<String>();
 		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
 			while (sc.hasNextLine()) {

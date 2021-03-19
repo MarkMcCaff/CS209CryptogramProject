@@ -89,7 +89,6 @@ public class sprint2Tests {
     @Test
     void savePlayer() {
         this.Player = new Player("testUser");
-
         Scanner sc1 = new Scanner(System.in);
         Player.setUsername("testUser");
         Player.setCorrectGuesses(10);
