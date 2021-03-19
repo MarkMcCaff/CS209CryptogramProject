@@ -1,7 +1,7 @@
 public class Player extends Players {
 	
 	private String username;
-	private int accuracy;
+	private double accuracy;
 	private int totalGuesses;
 	private int correctGuesses;
 	private int cryptogramsPlayed;
@@ -9,11 +9,11 @@ public class Player extends Players {
 	
 	public Player(String name) {
 		username = name;
-		accuracy = 0;
-		totalGuesses = 0;
-		correctGuesses = 0;
-		cryptogramsPlayed = 0;
-		cryptogramsCompleted = 0;
+		accuracy = getAccuracy();
+		totalGuesses = getGuesses();
+		correctGuesses = getCorrectGuesses();
+		cryptogramsPlayed = getNumCryptogramsPlayed();
+		cryptogramsCompleted = getNumCryptogramsCompleted();
 	}
 	
 	public void incrementCryptogramsCompleted() {
@@ -34,7 +34,7 @@ public class Player extends Players {
 	
 	public double getAccuracy() {
 		if (totalGuesses!=0) {
-			accuracy = (correctGuesses / totalGuesses) * 100;
+			accuracy = ((Double.valueOf(correctGuesses)) / (Double.valueOf(totalGuesses))) * 100;
 		}
 		return accuracy;
 	}
@@ -57,5 +57,29 @@ public class Player extends Players {
 	
 	public int getCorrectGuesses() {
 		return correctGuesses;
+	}
+
+	public void setAccuracy(double set) {
+		accuracy = set;
+	}
+
+	public void setNumCryptogramsCompleted(int set) {
+		cryptogramsCompleted = set;
+	}
+
+	public void setNumCryptogramsPlayed(int set) {
+		cryptogramsPlayed = set;
+	}
+
+	public void setGuesses(int set) {
+		totalGuesses = set;
+	}
+
+	public void setUsername(String set) {
+		username = set;
+	}
+
+	public void setCorrectGuesses(int set) {
+		correctGuesses = set;
 	}
 }

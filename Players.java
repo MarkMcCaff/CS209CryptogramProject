@@ -5,12 +5,13 @@ import java.util.*;
 
 public class Players{
 	//static ArrayList <String> playerList;
-	static ArrayList<String> username = new ArrayList<String>();
-	static ArrayList<Double> accuracy = new ArrayList<Double>();
-	static ArrayList<Integer> totalGuesses = new ArrayList<Integer>();
-	static ArrayList<Integer> correctGuesses = new ArrayList<Integer>();
-	static ArrayList<Integer> cryptogramsPlayed = new ArrayList<Integer>();
-	static ArrayList<Integer> cryptogramsCompleted = new ArrayList<Integer>();
+	static String username;
+	static Double accuracy;
+	static int totalGuesses;
+	static int correctGuesses;
+	static int cryptogramsPlayed;
+	static int cryptogramsCompleted;
+	static int count;
 
 	public Players() {
 		//String username = this.getUsername();
@@ -42,12 +43,13 @@ public class Players{
 		readSavedPlayers(play);
 		String newUsername = play.getUsername();
 		boolean found = false;
-		for (int i = 0; i < username.size(); i++) {
-			if (newUsername == username.get(i)) {
+		for (int i = 0; i < count; i++) {
+			if (newUsername.equals(username)) {
 				found = true;
+
 			}
 		}
-		if (found = true) {
+		if (found) {
 			System.out.println("Signed in as: " + newUsername);
 		} else {
 			writeToFile(play);
@@ -70,17 +72,25 @@ public class Players{
     	      	System.out.println("An error occurred.");
     	      	e.printStackTrace();
     	    }
+    	count = 0;
     	    for(String line : data){
     			String [] split = line.split(",");
     			if (split[0].equals(play.getUsername())) {
-    				username.add(split[0]);
-    				accuracy.add(Double.parseDouble(split[1]));
-    				totalGuesses.add(Integer.parseInt(split[2]));
-    				correctGuesses.add(Integer.parseInt(split[3]));
-    				cryptogramsPlayed.add(Integer.parseInt(split[4]));
-    				cryptogramsCompleted.add(Integer.parseInt(split[5]));
+    				username = split[0];
+    				play.setUsername(split[0]);
+    				accuracy = Double.parseDouble(split[1]);
+					play.setAccuracy(Double.parseDouble(split[1]));
+    				totalGuesses = Integer.parseInt(split[2]);
+					play.setGuesses(Integer.parseInt(split[2]));
+    				correctGuesses = Integer.parseInt(split[3]);
+					play.setCorrectGuesses(Integer.parseInt(split[3]));
+    				cryptogramsPlayed = Integer.parseInt(split[4]);
+					play.setNumCryptogramsPlayed(Integer.parseInt(split[4]));
+    				cryptogramsCompleted = Integer.parseInt(split[5]);
+					play.setNumCryptogramsCompleted(Integer.parseInt(split[5]));
     				
     			}
+    			count++;
     	    }
     }
      
@@ -101,7 +111,6 @@ public class Players{
    			String[] split = line.split(",");
    			if (split[0].equals(play.getUsername())) {
    				existingPlayer = true;
-   			System.out.println("You have signed in as " + play.getUsername());
    			}
    		}
    
@@ -112,32 +121,11 @@ public class Players{
 	public void savePlayers(Player play, Scanner sc) {
 		boolean previousSave = findPlayer(play);
 		
-			if(previousSave) {
-				System.out.println("Update previous data? Y/N: ");
-				char ans = Character.toUpperCase(sc.next().charAt(0));
-				if (ans == 'Y') {
-					overwrite(play);
-					writeToFile(play);
-					System.out.println("Your player info has been saved.");
-				}
-				else {
-					System.out.println("Your player info has not been saved.");
-				}
+		if(previousSave) {
+			overwrite(play);
 
-			}else{
-				writeToFile(play);
-				System.out.println("Your player info has been saved.");
-				System.out.println("Username: " + play.getUsername());
-				System.out.println("Total Guesses: " + play.getGuesses());
-				System.out.println("Correct Guesses: " + play.getCorrectGuesses());
-				System.out.println("Accuracy: " + play.getAccuracy());
-				System.out.println("Cryptograms Played: " + play.getNumCryptogramsPlayed());
-				System.out.println("CryptogramsCompleted: " + play.getNumCryptogramsCompleted());
-
-
-			}
-		
-			
+		}
+		writeToFile(play);
 	}
 
     public static void overwrite(Player play) {

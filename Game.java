@@ -43,7 +43,7 @@ public class Game {
 			numericalCrypto cryptogram = new numericalCrypto();
 			commandList(sc, cryptogram, play);
 		}
-		// Increments the number of cryptograms a player has played when one is generated 
+		// Increments the number of cryptograms a player has played when one is generated
 		play.incrementCryptogramsPlayed();
 	}
 	
@@ -599,8 +599,8 @@ public class Game {
 		}
 	}
 	
-	public void showSolution() {
-		
+	public static void showSolution(Cryptogram currCrypto) {
+		System.out.println("This is the solution: " + currCrypto.phrase);
 	}
 	
 	// Method used to start the program
@@ -609,7 +609,6 @@ public class Game {
 		String name = sc.nextLine();
 		Player play = new Player(name);
 		play.addPlayer(play);
-		play.savePlayers(play,sc);
 		System.out.println("--------------------------------------------------------");
 		System.out.println("Welcome " + name + ", the following digits correspond to the specified action:");
 		System.out.println("1 - alphabetical cryptogram");
@@ -685,32 +684,31 @@ public class Game {
 				else {
 					enterLetterNumber(sc, currCrypto, play);
 				}
-				play.savePlayers(play,sc);
 				break;
 			case 2:
 				// Carries out the undoLetter method - allowing players to remove letters from their solution
 				undoLetter(sc);
-				play.savePlayers(play,sc);
 				break;
-
+				case 4:
+					showSolution(currCrypto);
+					break;
 				case 5:
 					saveGame(currCrypto, play, sc);
-					play.savePlayers(play,sc);
 					break;
 				case 6:
 					loadGame(currCrypto, play);
-					play.savePlayers(play,sc);
 					break;
 				case 7:
 					System.out.println("Username: " + play.getUsername());
 					System.out.println("Total Guesses: " + play.getGuesses());
 					System.out.println("Correct Guesses: " + play.getCorrectGuesses());
-					System.out.println("Accuracy: " + play.getAccuracy());
+					System.out.println("Accuracy: " + play.getAccuracy() + "%");
 					System.out.println("Cryptograms Played: " + play.getNumCryptogramsPlayed());
 					System.out.println("CryptogramsCompleted: " + play.getNumCryptogramsCompleted());
 					break;
 			case 8:
 				// Exits the program
+				play.savePlayers(play,sc);
 				System.out.println("Now exiting...");
 				complete = true;
 				break;
