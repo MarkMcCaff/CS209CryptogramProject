@@ -58,12 +58,17 @@ public class Players {
 	}
 
 	public static Player findUser(String username) {
-		Player foundPlayer = new Player();
+		Player foundPlayer = new Player(username);
 		List<String> data = createPlayerList();
 		for(String line : data){
 			String [] split = line.split(",");
 			if (split[0].equals(username)) {
-				foundPlayer = new Player(split[0], Integer.parseInt(split[2]), Integer.parseInt(split[3]), Integer.parseInt(split[4]), Integer.parseInt(split[5]));
+				foundPlayer = new Player(split[0]);
+				foundPlayer.setAccuracy(Double.parseDouble(split[1]));
+				foundPlayer.setGuesses(Integer.parseInt(split[2]));
+				foundPlayer.setCorrectGuesses(Integer.parseInt(split[3]));
+				foundPlayer.setNumCryptogramsPlayed(Integer.parseInt(split[4]));
+				foundPlayer.setNumCryptogramsCompleted(Integer.parseInt(split[5]));
 			}
 		}
 		return foundPlayer;
@@ -72,7 +77,7 @@ public class Players {
 	public static List<String> createPlayerList() {
 		List<String> data = new ArrayList<String>();
     	try {
-    		File myObj = new File("C:\\Users\\scott\\Desktop\\savedPlayers.txt");
+    		File myObj = new File("savedPlayers.txt");
     		Scanner sc = new Scanner(myObj);
     		while (sc.hasNextLine()) {
     			data.add(sc.nextLine());
@@ -112,7 +117,7 @@ public class Players {
    	public static boolean findPlayer(Player play) {
    		boolean existingPlayer = false;
 
-   		File myObj = new File("C:\\Users\\scott\\Desktop\\savedPlayers.txt");
+   		File myObj = new File("savedPlayers.txt");
    		List<String> words = new ArrayList<String>();
    		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
    			while (sc.hasNextLine()) {
@@ -134,23 +139,21 @@ public class Players {
 	
 	public void savePlayers(Player play) {
 		boolean previousSave = findPlayer(play);
-		
 		if(previousSave) {
 			overwrite(play);
-
 		}
 		writeToFile(play);
 	}
 
     public static void overwrite(Player play) {
-		File myObj1 = new File("C:\\Users\\scott\\Desktop\\savedPlayers.txt");
+		File myObj1 = new File("savedPlayers.txt");
 		List<String> words1 = new ArrayList<String>();
 		List<String> loadUsername = new ArrayList<String>();
 		List<Double> accuracy = new ArrayList<Double>();
-		List<String> totalGuesses = new ArrayList<String>();
-		List<String> correctGuesses = new ArrayList<String>();
-		List<String> cryptogramsPlayed = new ArrayList<String>();
-		List<String> cryptogramsCompleted = new ArrayList<String>();
+		List<Integer> totalGuesses = new ArrayList<Integer>();
+		List<Integer> correctGuesses = new ArrayList<Integer>();
+		List<Integer> cryptogramsPlayed = new ArrayList<Integer>();
+		List<Integer> cryptogramsCompleted = new ArrayList<Integer>();
 		
 		accuracy.add(play.getAccuracy());
 		
@@ -168,10 +171,10 @@ public class Players {
 			String[] split = line.split(",");
 			loadUsername.add(split[0]);
 			accuracy.add(Double.parseDouble(split[1]));
-			totalGuesses.add(split[2]);
-			correctGuesses.add(split[3]);
-			cryptogramsPlayed.add(split[4]);
-			cryptogramsCompleted.add(split[5]);
+			totalGuesses.add(Integer.parseInt(split[2]));
+			correctGuesses.add(Integer.parseInt(split[3]));
+			cryptogramsPlayed.add(Integer.parseInt(split[4]));
+			cryptogramsCompleted.add(Integer.parseInt(split[5]));
 			if (split[0].equals(remove)) {
 				removeInt = i;
 			}
@@ -185,21 +188,21 @@ public class Players {
 			cryptogramsPlayed.remove(removeInt);
 			cryptogramsCompleted.remove(removeInt);
 			try {
-				FileWriter fw = new FileWriter("C:\\Users\\scott\\Desktop\\savedPlayers.txt");
-				BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedPlayers.txt", true));
+				FileWriter fw = new FileWriter("savedPlayers.txt");
+				BufferedWriter bw = new BufferedWriter(new FileWriter("savedPlayers.txt", true));
 				fw.write("");
 				for (int j = 0; j < loadUsername.size(); j++) {
 					bw.append(loadUsername.get(j));
 					bw.append(",");
 					bw.append(Double.toString(accuracy.get(j)));
 					bw.append(",");
-					bw.append(totalGuesses.get(j));
+					bw.append(Integer.toString(totalGuesses.get(j)));
 					bw.append(",");
-					bw.append(correctGuesses.get(j));
+					bw.append(Integer.toString(correctGuesses.get(j)));
 					bw.append(",");
-					bw.append(cryptogramsPlayed.get(j));
+					bw.append(Integer.toString(cryptogramsPlayed.get(j)));
 					bw.append(",");
-					bw.append(cryptogramsCompleted.get(j));
+					bw.append(Integer.toString(cryptogramsCompleted.get(j)));
 					bw.append(",");
 					bw.newLine();
 				}
@@ -214,7 +217,7 @@ public class Players {
     
   	public static void writeToFile(Player play){
   		try {
-  			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedPlayers.txt", true));
+  			BufferedWriter bw = new BufferedWriter(new FileWriter("savedPlayers.txt", true));
   			bw.append(play.getUsername());
 			bw.append(",");
 			bw.append(Double.toString(play.getAccuracy()));
