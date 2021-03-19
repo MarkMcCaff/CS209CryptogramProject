@@ -604,13 +604,17 @@ public class Game {
 
 	//This method loads the user's previous save if it exists
 	public static void loadGame(Cryptogram currCrypto, Player play) {
-		readLetterCryptogramsFile(currCrypto, play);
-		readNumberCryptogramsFile(currCrypto, play);
+		int letters = readLetterCryptogramsFile(currCrypto, play);
+		int numbers = readNumberCryptogramsFile(currCrypto, play);
+		if (letters + numbers == 0){
+			System.out.println("You have no saved cryptograms to load.");
+		}
 	}
 
 
 	//This method read the letter cryptograms file
-	public static void readLetterCryptogramsFile(Cryptogram currCrypto, Player play){
+	public static int readLetterCryptogramsFile(Cryptogram currCrypto, Player play){
+		int present = 0;
 		File myObj = new File("savedLetterCryptos.txt");
 		List<String> words = new ArrayList<String>();
 		try(Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
@@ -643,13 +647,16 @@ public class Game {
 				System.out.println(loadPuzzle);
 				System.out.println("Current guess: ");
 				System.out.println(loadGuess);
+				present = 1;
 			}
 		}
+		return present;
 	}
 
 
 	//This method read the number cryptograms file
-	public static void readNumberCryptogramsFile(Cryptogram currCrypto, Player play) {
+	public static int readNumberCryptogramsFile(Cryptogram currCrypto, Player play) {
+		int present = 0;
 		File myObj = new File("savedNumberCryptos.txt");
 		List<String> words = new ArrayList<String>();
 		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
@@ -685,8 +692,10 @@ public class Game {
 				System.out.println("");
 				System.out.println("Current guess: ");
 				System.out.println(loadGuess);
+				present = 1;
 			}
 		}
+		return present;
 	}
 
 
