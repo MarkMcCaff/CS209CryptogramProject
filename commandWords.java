@@ -12,6 +12,8 @@ public class commandWords {
         validCommands.put("load", commandWord.LOAD);
         validCommands.put("exit", commandWord.EXIT);
         validCommands.put("help", commandWord.HELP);
+        validCommands.put("solution", commandWord.SOLUTION);
+        validCommands.put("stats", commandWord.STATS);
     }
 
 	public commandWord getCommandWord(String commandWord) {
@@ -30,7 +32,7 @@ public class commandWords {
 
     public void showAll() {
         for(String command : validCommands.keySet()) {
-            System.out.print(command + "  ");
+            System.out.print(command + " | ");
         }
         System.out.println();
     }
