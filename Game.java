@@ -350,13 +350,14 @@ public class Game {
 				else {
 					System.out.println("Your cryptogram has not been saved.");
 				}
-
-			}else{
+			}
+			else {
 				//Saves the current cryptogram
 				writeToLetterCryptogramFile(currCrypto, play);
 				System.out.println("Your cryptogram has been saved.");
 			}
-		}else {
+		}
+		else {
 			if(previousSave) {
 				System.out.println("There is already a cryptogram saved under this username.");
 				System.out.println("Would you like to overwrite it? Y/N: ");
@@ -371,7 +372,8 @@ public class Game {
 				else {
 					System.out.println("Your cryptogram has not been saved.");
 				}
-			}else{
+			}
+			else {
 				writeToNumberCryptogramFile(currCrypto, play);
 				System.out.println("Your cryptogram has been saved.");
 			}
@@ -380,7 +382,7 @@ public class Game {
 
 	//Method for getting rid of user's previous save when they want to save a new crypto
 	public static void overwrite(Cryptogram currCrypto, Player play) {
-		File myObj1 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
+		File myObj1 = new File("filename.txt");
 		List<String> words1 = new ArrayList<String>();
 		List<String> loadUsername = new ArrayList<String>();
 		List<String> loadPuzzle = new ArrayList<String>();
@@ -392,7 +394,8 @@ public class Game {
 			while (sc.hasNextLine()) {
 				words1.add(sc.nextLine());
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		int i = 0;
@@ -413,8 +416,8 @@ public class Game {
 			loadGuess.remove(removeInt);
 			loadSolution.remove(removeInt);
 			try {
-				FileWriter fw = new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
-				BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt", true));
+				FileWriter fw = new FileWriter("filename.txt");
+				BufferedWriter bw = new BufferedWriter(new FileWriter("filename.txt", true));
 				fw.write("");
 				for (int j = 0; j < loadUsername.size(); j++) {
 					bw.append(loadUsername.get(j));
@@ -428,12 +431,14 @@ public class Game {
 				}
 				bw.close();
 				fw.close();
-			} catch (IOException e) {
+			} 
+			catch (IOException e) {
 				System.out.println("An error occurred.");
 				e.printStackTrace();
 			}
-		} else {
-			File myObj2 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
+		}
+		else {
+			File myObj2 = new File("filename.txt");
 			List<String> words2 = new ArrayList<String>();
 			List<String> loadIntUsername = new ArrayList<String>();
 			ArrayList<String> tempPuzzle = new ArrayList<String>();
@@ -444,7 +449,8 @@ public class Game {
 				while (sc.hasNextLine()) {
 					words2.add(sc.nextLine());
 				}
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 			i = 0;
@@ -467,8 +473,8 @@ public class Game {
 					loadIntGuess.remove(removeInt);
 					loadIntSolution.remove(removeInt);
 					try {
-						FileWriter fw = new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
-						BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt", true));
+						FileWriter fw = new FileWriter("filename.txt");
+						BufferedWriter bw = new BufferedWriter(new FileWriter("filename.txt", true));
 						fw.write("");
 						for (int j = 0; j < loadIntUsername.size(); j++) {
 							bw.append(loadIntUsername.get(j));
@@ -484,28 +490,27 @@ public class Game {
 						}
 						bw.close();
 						fw.close();
-					} catch (IOException e) {
+					}
+					catch (IOException e) {
 						System.out.println("An error occurred.");
 						e.printStackTrace();
 					}
 				}
 			}
-
-
 		}
 	}
 
 	//This method checks whether the user has any previous saves
 	public static boolean previousSaveGame(Player play) {
 		boolean previous = false;
-
-		File myObj1 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
+		File myObj1 = new File("filename.txt");
 		List<String> words1 = new ArrayList<String>();
 		try (Scanner sc = new Scanner((myObj1), StandardCharsets.UTF_8.name())) {
 			while (sc.hasNextLine()) {
 				words1.add(sc.nextLine());
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		for (String line : words1) {
@@ -514,13 +519,14 @@ public class Game {
 				previous = true;
 			}
 		}
-		File myObj2 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
+		File myObj2 = new File("filename.txt");
 		List<String> words2 = new ArrayList<String>();
 		try(Scanner sc = new Scanner((myObj2), StandardCharsets.UTF_8.name())) {
 			while(sc.hasNextLine()) {
 				words2.add(sc.nextLine());
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		for(String line : words2) {
@@ -536,7 +542,7 @@ public class Game {
 	public static void writeToLetterCryptogramFile(Cryptogram currCrypto, Player play){
 		char[] encryption = currCrypto.getEncryption();
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt", true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("filename.txt", true));
 			bw.append(play.getUsername());
 			bw.append(",");
 			for (int i = 0; i < encryption.length; i++) {
@@ -550,7 +556,8 @@ public class Game {
 			bw.append(currCrypto.phrase);
 			bw.newLine();
 			bw.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			System.out.println("An error occurred.");
 			e.printStackTrace();
 		}
@@ -560,7 +567,7 @@ public class Game {
 	public static void writeToNumberCryptogramFile(Cryptogram currCrypto, Player play){
 		int[] encryption = currCrypto.getIntEncryption();
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt", true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("filename.txt", true));
 			bw.append(play.getUsername());
 			bw.append(",");
 			for (int i = 0; i < playerGuess.length; i++) {
@@ -575,7 +582,8 @@ public class Game {
 			}
 			bw.newLine();
 			bw.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			System.out.println("An error occurred.");
 			e.printStackTrace();
 		}
@@ -589,13 +597,14 @@ public class Game {
 
 	//This method read the letter cryptograms file
 	public static void readLetterCryptogramsFile(Cryptogram currCrypto, Player play){
-		File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
+		File myObj = new File("filename.txt");
 		List<String> words = new ArrayList<String>();
 		try(Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
 			while(sc.hasNextLine()) {
 				words.add(sc.nextLine());
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		for(String line : words){
@@ -616,29 +625,26 @@ public class Game {
 				currCrypto.phrase = loadSolution;
 				currCrypto.encryptedPhrase = ch1;
 				playerGuess = ch2;
-
 				System.out.println("Encoded phrase: ");
 				System.out.println(loadPuzzle);
-
 				System.out.println("Current guess: ");
 				System.out.println(loadGuess);
 			}
 		}
 	}
 
-
 	//This method read the number cryptograms file
 	public static void readNumberCryptogramsFile(Cryptogram currCrypto, Player play) {
-		File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
+		File myObj = new File("filename.txt");
 		List<String> words = new ArrayList<String>();
 		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
 			while (sc.hasNextLine()) {
 				words.add(sc.nextLine());
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		for (String line : words) {
 			String[] split = line.split(",");
 			if (split[0].equals(play.getUsername())) {
@@ -653,24 +659,23 @@ public class Game {
 				for (int i = 0; i < loadGuess.length(); i++) {
 					ch2[i] = loadGuess.charAt(i);
 				}
-
-
 				currCrypto.phrase = loadSolution;
 				currCrypto.intEncryptedPhrase = ch1;
 				playerGuess = ch2;
-
 				System.out.println("Encoded phrase: ");
 				for (int i = 0; i < loadSolution.length(); i++) {
 					System.out.print(ch1[i]);
 					System.out.print(" ");
 				}
-
 				System.out.println("");
 				System.out.println("Current guess: ");
 				System.out.println(loadGuess);
-
 			}
 		}
+	}
+		
+	public static void showSolution(Cryptogram currCrypto) {
+		System.out.println("This is the solution: " + currCrypto.phrase);
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
