@@ -33,7 +33,7 @@ public class Player {
 	}
 	
 	public double getAccuracy() {
-		return (double) ((correctGuesses / totalGuesses) * 100);
+		return (((double) correctGuesses / (double) totalGuesses) * 100);
 	}
 	
 	public void setAccuracy(double set) {
