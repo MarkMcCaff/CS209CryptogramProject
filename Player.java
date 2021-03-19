@@ -1,7 +1,6 @@
 public class Player {
 	
 	private String username;
-	private int accuracy;
 	private int totalGuesses;
 	private int correctGuesses;
 	private int cryptogramsPlayed;
@@ -45,5 +44,13 @@ public class Player {
 	
 	public int getGuesses() {
 		return totalGuesses;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+	
+	public int getCorrectGuesses() {
+		return correctGuesses;
 	}
 }
