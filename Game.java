@@ -306,7 +306,7 @@ public class Game {
 
 	//Method for getting rid of user's previous save when they want to save a new crypto
 	public static void overwrite(Cryptogram currCrypto, Player play) {
-		File myObj1 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
+		File myObj1 = new File("savedLetterCryptos.txt");
 		List<String> words1 = new ArrayList<String>();
 		List<String> loadUsername = new ArrayList<String>();
 		List<String> loadPuzzle = new ArrayList<String>();
@@ -339,8 +339,8 @@ public class Game {
 			loadGuess.remove(removeInt);
 			loadSolution.remove(removeInt);
 			try {
-				FileWriter fw = new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
-				BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt", true));
+				FileWriter fw = new FileWriter("savedLetterCryptos.txt");
+				BufferedWriter bw = new BufferedWriter(new FileWriter("savedLetterCryptos.txt", true));
 				fw.write("");
 				for (int j = 0; j < loadUsername.size(); j++) {
 					bw.append(loadUsername.get(j));
@@ -359,7 +359,7 @@ public class Game {
 				e.printStackTrace();
 			}
 		} else {
-			File myObj2 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
+			File myObj2 = new File("savedNumberCryptos.txt");
 			List<String> words2 = new ArrayList<String>();
 			List<String> loadIntUsername = new ArrayList<String>();
 			ArrayList<String> tempPuzzle = new ArrayList<String>();
@@ -393,8 +393,8 @@ public class Game {
 					loadIntGuess.remove(removeInt);
 					loadIntSolution.remove(removeInt);
 					try {
-						FileWriter fw = new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
-						BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt", true));
+						FileWriter fw = new FileWriter("savedNumberCryptos.txt");
+						BufferedWriter bw = new BufferedWriter(new FileWriter("savedNumberCryptos.txt", true));
 						fw.write("");
 						for (int j = 0; j < loadIntUsername.size(); j++) {
 							bw.append(loadIntUsername.get(j));
@@ -425,7 +425,7 @@ public class Game {
 	public static boolean previousSaveGame(Player play) {
 		boolean previous = false;
 
-		File myObj1 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
+		File myObj1 = new File("savedLetterCryptos.txt");
 		List<String> words1 = new ArrayList<String>();
 		try (Scanner sc = new Scanner((myObj1), StandardCharsets.UTF_8.name())) {
 			while (sc.hasNextLine()) {
@@ -440,7 +440,7 @@ public class Game {
 				previous = true;
 			}
 		}
-		File myObj2 = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
+		File myObj2 = new File("savedNumberCryptos.txt");
 		List<String> words2 = new ArrayList<String>();
 		try(Scanner sc = new Scanner((myObj2), StandardCharsets.UTF_8.name())) {
 			while(sc.hasNextLine()) {
@@ -462,7 +462,7 @@ public class Game {
 	public static void writeToLetterCryptogramFile(Cryptogram currCrypto, Player play){
 		char[] encryption = currCrypto.getEncryption();
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt", true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("savedLetterCryptos.txt", true));
 			bw.append(play.getUsername());
 			bw.append(",");
 			for (int i = 0; i < encryption.length; i++) {
@@ -486,7 +486,7 @@ public class Game {
 	public static void writeToNumberCryptogramFile(Cryptogram currCrypto, Player play){
 		int[] encryption = currCrypto.getIntEncryption();
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt", true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("savedNumberCryptos.txt", true));
 			bw.append(play.getUsername());
 			bw.append(",");
 			for (int i = 0; i < playerGuess.length; i++) {
@@ -515,7 +515,7 @@ public class Game {
 
 	//This method read the letter cryptograms file
 	public static void readLetterCryptogramsFile(Cryptogram currCrypto, Player play){
-		File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedLetterCryptos.txt");
+		File myObj = new File("savedLetterCryptos.txt");
 		List<String> words = new ArrayList<String>();
 		try(Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
 			while(sc.hasNextLine()) {
@@ -555,7 +555,7 @@ public class Game {
 
 	//This method read the number cryptograms file
 	public static void readNumberCryptogramsFile(Cryptogram currCrypto, Player play) {
-		File myObj = new File("C:\\Users\\euanb\\Documents\\2ndYear\\CS207\\2ndSemesterAssignment\\savedNumberCryptos.txt");
+		File myObj = new File("savedNumberCryptos.txt");
 		List<String> words = new ArrayList<String>();
 		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
 			while (sc.hasNextLine()) {
