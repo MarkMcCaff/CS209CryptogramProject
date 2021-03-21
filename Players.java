@@ -51,6 +51,11 @@ public class Players {
 		}
 		if (found) {
 			System.out.println("Signed in as: " + newUsername);
+			System.out.println("Number of guesses: " + String.valueOf(play.getGuesses()));
+			System.out.println("Number of correct guesses: " + String.valueOf(play.getCorrectGuesses()));
+			System.out.println("Accuracy: " + String.valueOf(play.getAccuracy()) + "%");
+			System.out.println("Number of cryptograms played: " + String.valueOf(play.getNumCryptogramsPlayed()));
+			System.out.println("Number of cryptograms completed: " + String.valueOf(play.getNumCryptogramsCompleted()));
 		} else {
 			writeToFile(play);
 			System.out.println("New user: " + newUsername);

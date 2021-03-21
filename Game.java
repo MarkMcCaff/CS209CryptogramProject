@@ -12,24 +12,25 @@ public class Game {
 	static commandWords commands = new commandWords();
 
 	// Depending on the player's input, the desired Cryptogram will be generated
-	public static void generateCryptogram(Scanner sc, int cryptoType, Player play) {
+	public static void generateCryptogram(Scanner sc, int cryptoType, Player play, int use) {
 		// Increments the number of cryptograms a player has played when one is generated 
 		play.incremementCryptogramsPlayed();
-		if (cryptoType == 1) {
-			intTypeCrypto = 1;
-			System.out.println("Alphabetical Cryptogram: ");
-			alphabeticalCrypto cryptogram = new alphabeticalCrypto();
-			System.out.println("Welcome! Type 'help' if you need help ");
-			setupPlayerGuess(cryptogram);
-			commandInput(sc, cryptogram, play, playerGuess);
-		}
-		else if (cryptoType == 2) {
-			intTypeCrypto = 2;
-			System.out.println("Numerical Cryptogram: NOTE a 0 represents empty space!");
-			numericalCrypto cryptogram = new numericalCrypto();
-			System.out.println("Welcome! Type 'help' if you need help");
-			setupPlayerGuess(cryptogram);
-			commandInput(sc, cryptogram, play, playerGuess);
+		if(use==0) {
+			if (cryptoType == 1) {
+				intTypeCrypto = 1;
+				System.out.println("Alphabetical Cryptogram: ");
+				alphabeticalCrypto cryptogram = new alphabeticalCrypto();
+				System.out.println("Welcome! Type 'help' if you need help ");
+				setupPlayerGuess(cryptogram);
+				commandInput(sc, cryptogram, play, playerGuess);
+			} else if (cryptoType == 2) {
+				intTypeCrypto = 2;
+				System.out.println("Numerical Cryptogram: NOTE a 0 represents empty space!");
+				numericalCrypto cryptogram = new numericalCrypto();
+				System.out.println("Welcome! Type 'help' if you need help");
+				setupPlayerGuess(cryptogram);
+				commandInput(sc, cryptogram, play, playerGuess);
+			}
 		}
 	}
 	
@@ -45,7 +46,7 @@ public class Game {
 	    // A temporary array is used to compare elements and inputs to ensure there's no automatic overwriting 
 	    char[] temp = currCrypto.getPhrase().toUpperCase().toCharArray();
 	    checkForAlphOverwriting(encryption, replacer, sc, temp, guess, play);
-	    checkCorrectness(temp, play);
+	    checkCorrectness(temp, play, 0);
 	    for (int i = 0; i < encryption.length; i++) {
 	    	System.out.print(encryption[i]);
 	    }
@@ -119,7 +120,7 @@ public class Game {
 	    char[] temp = currCrypto.getPhrase().toUpperCase().toCharArray();
 	    // Finds the first instance of the letter being guessed and makes sure it hasn't been guessed already
 	    checkForNumOverwriting(encryption, replacer, sc, temp, guess, play);
-	    checkCorrectness(temp, play);
+	    checkCorrectness(temp, play, 0);
 	    for (int i = 0; i < encryption.length; i++) {
 	    	System.out.print(encryption[i] + " ");
 	    }
@@ -154,7 +155,7 @@ public class Game {
 	    }
 	}
 	
-	public static void checkCorrectness(char[] temp, Player play) {
+	public static void checkCorrectness(char[] temp, Player play, int use) {
 		 // If the player's answer matches, their stats are updated and the game ends 
 	    int wrong = 0;
 	    for (int i = 0; i < playerGuess.length; i++) {
@@ -167,7 +168,9 @@ public class Game {
 	    	System.out.println("Congratulations! You got the answer!");
 	    	play.incremementCryptogramsCompleted();
 	    	play.savePlayers(play);
-	    	System.exit(0);
+	    	if (use==0) {
+				System.exit(0);
+			}
 	    }
 	    int entries = 0;
 	    for (int i = 0; i < playerGuess.length; i++) {
@@ -251,7 +254,7 @@ public class Game {
 		int input = sc.nextInt();  
 		sc.nextLine();
 		if (input == 1 || input == 2) { 
-			generateCryptogram(sc, input, play);
+			generateCryptogram(sc, input, play,0);
 		}
 		// If the input it read was not of the two digits, it gives an error
 		else {
