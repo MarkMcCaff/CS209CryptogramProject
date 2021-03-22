@@ -38,19 +38,19 @@ public class alphabeticalCrypto extends Cryptogram {
 		if (position == 0) {
 			encChars[position] = newChar;
 			numsUsed.add(((int) newChar));
-		}
-		// Compares an element with all of the previous elements 
-		for (int j = 0; j < position; j++) { 
-			// If it appeared previously, the mapping is copied 
-			if (usedChars[position] == usedChars [j]) {
-				encChars[position] = encChars[j];
-				break;
+		} 
+		else {
+			// Compares an element with all of the previous elements 
+			for (int j = 0; j < position; j++) { 
+				// If it appeared previously, the mapping is copied 
+				if (usedChars[position] == usedChars[j]) {
+					encChars[position] = encChars[j];
+					return;
+				}
 			}
 			// Otherwise a new mapping is made
-			else {
-				encChars[position] = newChar;
-				numsUsed.add(((int) newChar));
-			}
+			encChars[position] = newChar;
+			numsUsed.add(((int) newChar));	
 		}
 	}
 	
@@ -58,10 +58,8 @@ public class alphabeticalCrypto extends Cryptogram {
 	public char generateLetter() {
 		int result = randomNum();
 		// If already used in a mapping, another random number is chosen 
-		if (numsUsed.contains(result)) {
-			while (numsUsed.contains(result)) {
-				result = randomNum();
-			}
+		while (numsUsed.contains(result)) {
+			result = randomNum();
 		}
 		// Converts the random number generated into a character 
 		return (char) result;
