@@ -70,7 +70,7 @@ public class Game {
 	    	char ans = Character.toUpperCase(sc.next().charAt(0));
 	    	// If they answer yes, it's overwritten
 	    	if (ans == 'Y') {
-	    		enterLetterAlphHelper(temp, guess, replacer, encryption, play);
+	    		enterLetterAlphHelper(temp, guess, replacer, encryption, play,0);
 	    	}
 	    	// Any other answers won't update it
 	    	else {
@@ -78,11 +78,11 @@ public class Game {
 	    	}
 	    }
 	    else {
-	    	enterLetterAlphHelper(temp, guess, replacer, encryption, play);
+	    	enterLetterAlphHelper(temp, guess, replacer, encryption, play,0);
 	    }
 	}
 	
-	public static void enterLetterAlphHelper(char[] temp, char guess, char replacer, char[] encryption, Player play) {
+	public static void enterLetterAlphHelper(char[] temp, char guess, char replacer, char[] encryption, Player play, int use) {
 	    // Loops through the puzzle and if the character which the user wants to take a guess at exists, 
 	    // then the playerGuess variable is updated
 		 int location = 0;
@@ -94,21 +94,23 @@ public class Game {
 		 		replacementNo++;
 		 	}
 		 }
-		 // Prints an error if the player tried to replace an absent letter
-		if (replacementNo == 0) {
-			System.out.println("The letter you tried to replace was not in the puzzle");
-		}
-		// Updates the players stats based on whether the guess was correct or not
-		if (temp[location] == guess) {
-			play.incrementCorrGuesses();
-		}
-		else { 
-			play.incrementGuesses();
-		}
+
+		 if(use==0) {
+			 // Prints an error if the player tried to replace an absent letter
+			 if (replacementNo == 0) {
+				 System.out.println("The letter you tried to replace was not in the puzzle");
+			 }
+			 // Updates the players stats based on whether the guess was correct or not
+			 if (temp[location] == guess) {
+				 play.incrementCorrGuesses();
+			 } else {
+				 play.incrementGuesses();
+			 }
+		 }
 	}
 	
 	// Method for guessing a number within a numerical Cryptogram
-	public static void enterLetterNumber(Scanner sc, Cryptogram currCrypto, Player play) { 
+	public static void enterLetterNumber(Scanner sc, Cryptogram currCrypto, Player play) {
 	    System.out.println("Choose a number to replace: ");
 	    // Scanner reads the next two inputs from the input stream
 	    int replacer = sc.nextInt();
@@ -143,7 +145,7 @@ public class Game {
 	    	char ans = Character.toUpperCase(sc.next().charAt(0));
 	    	// If they answer yes, it's overwritten
 	    	if (ans == 'Y') {
-	    		enterLetterNumHelper(temp, guess, replacer, encryption, play);
+	    		enterLetterNumHelper(temp, guess, replacer, encryption, play,0);
 	    	}	
 	    	// Any other answers won't update it
 	    	else {
@@ -151,7 +153,7 @@ public class Game {
 	    	}
 	    }
 	    else {
-	    	enterLetterNumHelper(temp, guess, replacer, encryption, play);
+	    	enterLetterNumHelper(temp, guess, replacer, encryption, play,0);
 	    }
 	}
 	
@@ -168,7 +170,7 @@ public class Game {
 	    	System.out.println("Congratulations! You got the answer!");
 	    	play.incremementCryptogramsCompleted();
 	    	play.savePlayers(play);
-	    	if (use==0) {
+	    	if (use==0|use==2) {
 				System.exit(0);
 			}
 	    }
@@ -182,10 +184,12 @@ public class Game {
 	    	System.out.println("This is incorrect. Try overwriting some of your solution");
 	    }
 	    // The player's current solution is then printed to the screen
-	    System.out.print("Encoded Phrase: ");
+		if(use!=2) {
+			System.out.print("Encoded Phrase: ");
+		}
 	}
 	
-	public static void enterLetterNumHelper(char[] temp, char guess, int replacer, int[] encryption, Player play) {
+	public static void enterLetterNumHelper(char[] temp, char guess, int replacer, int[] encryption, Player play,int use) {
 		// Loops through the puzzle and if the number which the user wants to take a guess at exists, 
 		// then the playerGuess variable is updated
 		int location = 0;
@@ -287,6 +291,9 @@ public class Game {
 					// Carries out the undoLetter method - allowing players to remove letters from their solution
 					undoLetter(sc);
 					break;
+				case HINT:
+					giveHint(currCrypto,play);
+					break;
 				case SAVE:
 					saveGame(currCrypto, play, sc);
 					break;
@@ -335,6 +342,78 @@ public class Game {
 				if (currCrypto.intEncryptedPhrase[i] == 0) {
 					playerGuess[i] = ' ';
 				}
+			}
+		}
+	}
+
+// ------------------ SPRINT 3 ------------------ //
+
+	public static void giveHint(Cryptogram currCrypto,Player play){
+		if (intTypeCrypto==1){
+			giveLetterHint(currCrypto,play);
+		}else{
+			giveNumberHint(currCrypto,play);
+		}
+	}
+
+	public static void giveLetterHint(Cryptogram currCrypto,Player play){
+		boolean hintApplied = false;
+		char[] charSolution = currCrypto.phrase.toCharArray();
+		char[] encryption = currCrypto.getEncryption();
+		char[] temp = currCrypto.getPhrase().toUpperCase().toCharArray();
+
+		while(!hintApplied) {
+			int rndm = new Random().nextInt(currCrypto.encryptedPhrase.length);
+
+			if (playerGuess[rndm] != 0) {
+				if (playerGuess[rndm] != charSolution[rndm]) {
+					char replacer = Character.toUpperCase(currCrypto.encryptedPhrase[rndm]);
+					char guess = Character.toUpperCase(charSolution[rndm]);
+					enterLetterAlphHelper(temp,guess,replacer,encryption,play,1);
+					System.out.println("An incorrect guess has been corrected to give you a hint.");
+					currSolution();
+					checkCorrectness(temp, play, 2);
+					hintApplied = true;
+				}
+			}else{
+				char replacer = Character.toUpperCase(currCrypto.encryptedPhrase[rndm]);
+				char guess = Character.toUpperCase(charSolution[rndm]);
+				enterLetterAlphHelper(temp,guess,replacer,encryption,play,1);
+				System.out.println("A letter has been revealed to give you a hint.");
+				currSolution();
+				checkCorrectness(temp, play, 2);
+				hintApplied = true;
+			}
+		}
+	}
+
+	public static void giveNumberHint(Cryptogram currCrypto,Player play){
+		boolean hintApplied = false;
+		char[] charSolution = currCrypto.phrase.toCharArray();
+		int[] encryption = currCrypto.getIntEncryption();
+		char[] temp = currCrypto.getPhrase().toUpperCase().toCharArray();
+
+		while(!hintApplied) {
+			int rndm = new Random().nextInt(currCrypto.intEncryptedPhrase.length);
+
+			if (playerGuess[rndm] != 0) {
+				if (playerGuess[rndm] != charSolution[rndm]) {
+					int replacer = Character.toUpperCase(currCrypto.intEncryptedPhrase[rndm]);
+					char guess = Character.toUpperCase(charSolution[rndm]);
+					enterLetterNumHelper(temp,guess,replacer,encryption,play,1);
+					System.out.println("An incorrect guess has been corrected to give you a hint.");
+					currSolution();
+					checkCorrectness(temp, play, 2);
+					hintApplied = true;
+				}
+			}else{
+				int replacer = Character.toUpperCase(currCrypto.intEncryptedPhrase[rndm]);
+				char guess = Character.toUpperCase(charSolution[rndm]);
+				enterLetterNumHelper(temp,guess,replacer,encryption,play,1);
+				System.out.println("A letter has been revealed to give you a hint.");
+				currSolution();
+				checkCorrectness(temp, play, 2);
+				hintApplied = true;
 			}
 		}
 	}

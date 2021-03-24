@@ -233,7 +233,7 @@ public class sprint2Tests {
         char replacer = crypto.encryptedPhrase[1];
         char[] temp = crypto.getPhrase().toUpperCase().toCharArray();
         game.playerGuess = new char[crypto.encryptedPhrase.length];
-        game.enterLetterAlphHelper(temp, guess, replacer, encryption, Player);
+        game.enterLetterAlphHelper(temp, guess, replacer, encryption, Player,0);
         assertEquals(Player.getCorrectGuesses(),original + 1);
     }
 

@@ -9,6 +9,7 @@ public class commandWords {
         validCommands.put("guess", commandWord.GUESS);
         validCommands.put("save", commandWord.SAVE);
         validCommands.put("undo", commandWord.UNDO);
+        validCommands.put("hint", commandWord.HINT);
         validCommands.put("load", commandWord.LOAD);
         validCommands.put("exit", commandWord.EXIT);
         validCommands.put("help", commandWord.HELP);
