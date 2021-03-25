@@ -8,26 +8,29 @@ public class Game {
 	// This character array stores the current player's answer and updates when they guess or remove a letter
 	static char[] playerGuess;
 	// Integer for the player to decide which Cryptogram to play
-	static int intTypeCrypto;
+	static int intTypeCrypto = 0;
 	static commandWords commands = new commandWords();
 
 	// Depending on the player's input, the desired Cryptogram will be generated
-	public static void generateCryptogram(Scanner sc, int cryptoType, Player play) {
+	public static void generateCryptogram(Scanner sc, int cryptoType, Player play, int use) {
 		// Increments the number of cryptograms a player has played when one is generated 
 		play.incremementCryptogramsPlayed();
-		if (cryptoType == 1) {
-			System.out.println("Alphabetical Cryptogram: ");
-			alphabeticalCrypto cryptogram = new alphabeticalCrypto();
-			System.out.println("Welcome! Type 'help' if you need help ");
-			setupPlayerGuess(cryptogram);
-			commandInput(sc, cryptogram, play, playerGuess);
-		}
-		else if (cryptoType == 2) {
-			System.out.println("Numerical Cryptogram: NOTE a 0 represents empty space!");
-			numericalCrypto cryptogram = new numericalCrypto();
-			System.out.println("Welcome! Type 'help' if you need help");
-			setupPlayerGuess(cryptogram);
-			commandInput(sc, cryptogram, play, playerGuess);
+		if(use==0) {
+			if (cryptoType == 1) {
+				intTypeCrypto = 1;
+				System.out.println("Alphabetical Cryptogram: ");
+				alphabeticalCrypto cryptogram = new alphabeticalCrypto();
+				System.out.println("Welcome! Type 'help' if you need help ");
+				setupPlayerGuess(cryptogram);
+				commandInput(sc, cryptogram, play, playerGuess);
+			} else if (cryptoType == 2) {
+				intTypeCrypto = 2;
+				System.out.println("Numerical Cryptogram: NOTE a 0 represents empty space!");
+				numericalCrypto cryptogram = new numericalCrypto();
+				System.out.println("Welcome! Type 'help' if you need help");
+				setupPlayerGuess(cryptogram);
+				commandInput(sc, cryptogram, play, playerGuess);
+			}
 		}
 	}
 	
@@ -43,7 +46,7 @@ public class Game {
 	    // A temporary array is used to compare elements and inputs to ensure there's no automatic overwriting 
 	    char[] temp = currCrypto.getPhrase().toUpperCase().toCharArray();
 	    checkForAlphOverwriting(encryption, replacer, sc, temp, guess, play);
-	    checkCorrectness(temp, play);
+	    checkCorrectness(temp, play, 0);
 	    for (int i = 0; i < encryption.length; i++) {
 	    	System.out.print(encryption[i]);
 	    }
@@ -67,7 +70,7 @@ public class Game {
 	    	char ans = Character.toUpperCase(sc.next().charAt(0));
 	    	// If they answer yes, it's overwritten
 	    	if (ans == 'Y') {
-	    		enterLetterAlphHelper(temp, guess, replacer, encryption, play);
+	    		enterLetterAlphHelper(temp, guess, replacer, encryption, play,0);
 	    	}
 	    	// Any other answers won't update it
 	    	else {
@@ -75,11 +78,11 @@ public class Game {
 	    	}
 	    }
 	    else {
-	    	enterLetterAlphHelper(temp, guess, replacer, encryption, play);
+	    	enterLetterAlphHelper(temp, guess, replacer, encryption, play,0);
 	    }
 	}
 	
-	public static void enterLetterAlphHelper(char[] temp, char guess, char replacer, char[] encryption, Player play) {
+	public static void enterLetterAlphHelper(char[] temp, char guess, char replacer, char[] encryption, Player play, int use) {
 	    // Loops through the puzzle and if the character which the user wants to take a guess at exists, 
 	    // then the playerGuess variable is updated
 		 int location = 0;
@@ -91,21 +94,23 @@ public class Game {
 		 		replacementNo++;
 		 	}
 		 }
-		 // Prints an error if the player tried to replace an absent letter
-		if (replacementNo == 0) {
-			System.out.println("The letter you tried to replace was not in the puzzle");
-		}
-		// Updates the players stats based on whether the guess was correct or not
-		if (temp[location] == guess) {
-			play.incrementCorrGuesses();
-		}
-		else { 
-			play.incrementGuesses();
-		}
+
+		 if(use==0) {
+			 // Prints an error if the player tried to replace an absent letter
+			 if (replacementNo == 0) {
+				 System.out.println("The letter you tried to replace was not in the puzzle");
+			 }
+			 // Updates the players stats based on whether the guess was correct or not
+			 if (temp[location] == guess) {
+				 play.incrementCorrGuesses();
+			 } else {
+				 play.incrementGuesses();
+			 }
+		 }
 	}
 	
 	// Method for guessing a number within a numerical Cryptogram
-	public static void enterLetterNumber(Scanner sc, Cryptogram currCrypto, Player play) { 
+	public static void enterLetterNumber(Scanner sc, Cryptogram currCrypto, Player play) {
 	    System.out.println("Choose a number to replace: ");
 	    // Scanner reads the next two inputs from the input stream
 	    int replacer = sc.nextInt();
@@ -117,7 +122,7 @@ public class Game {
 	    char[] temp = currCrypto.getPhrase().toUpperCase().toCharArray();
 	    // Finds the first instance of the letter being guessed and makes sure it hasn't been guessed already
 	    checkForNumOverwriting(encryption, replacer, sc, temp, guess, play);
-	    checkCorrectness(temp, play);
+	    checkCorrectness(temp, play, 0);
 	    for (int i = 0; i < encryption.length; i++) {
 	    	System.out.print(encryption[i] + " ");
 	    }
@@ -140,7 +145,7 @@ public class Game {
 	    	char ans = Character.toUpperCase(sc.next().charAt(0));
 	    	// If they answer yes, it's overwritten
 	    	if (ans == 'Y') {
-	    		enterLetterNumHelper(temp, guess, replacer, encryption, play);
+	    		enterLetterNumHelper(temp, guess, replacer, encryption, play,0);
 	    	}	
 	    	// Any other answers won't update it
 	    	else {
@@ -148,11 +153,11 @@ public class Game {
 	    	}
 	    }
 	    else {
-	    	enterLetterNumHelper(temp, guess, replacer, encryption, play);
+	    	enterLetterNumHelper(temp, guess, replacer, encryption, play,0);
 	    }
 	}
 	
-	public static void checkCorrectness(char[] temp, Player play) {
+	public static void checkCorrectness(char[] temp, Player play, int use) {
 		 // If the player's answer matches, their stats are updated and the game ends 
 	    int wrong = 0;
 	    for (int i = 0; i < playerGuess.length; i++) {
@@ -165,7 +170,9 @@ public class Game {
 	    	System.out.println("Congratulations! You got the answer!");
 	    	play.incremementCryptogramsCompleted();
 	    	play.savePlayers(play);
-	    	System.exit(0);
+	    	if (use==0|use==2) {
+				System.exit(0);
+			}
 	    }
 	    int entries = 0;
 	    for (int i = 0; i < playerGuess.length; i++) {
@@ -177,10 +184,12 @@ public class Game {
 	    	System.out.println("This is incorrect. Try overwriting some of your solution");
 	    }
 	    // The player's current solution is then printed to the screen
-	    System.out.print("Encoded Phrase: ");
+		if(use!=2) {
+			System.out.print("Encoded Phrase: ");
+		}
 	}
 	
-	public static void enterLetterNumHelper(char[] temp, char guess, int replacer, int[] encryption, Player play) {
+	public static void enterLetterNumHelper(char[] temp, char guess, int replacer, int[] encryption, Player play,int use) {
 		// Loops through the puzzle and if the number which the user wants to take a guess at exists, 
 		// then the playerGuess variable is updated
 		int location = 0;
@@ -238,6 +247,7 @@ public class Game {
 		System.out.print("Please enter your username: ");
 		String name = sc.next();
 		Player play = new Player(name);
+		play.addPlayer(play);
 		System.out.println("--------------------------------------------------------");
 		System.out.println("Welcome " + name + ", the following digits correspond to the specified action:");
 		System.out.println("1 - alphabetical cryptogram");
@@ -248,7 +258,7 @@ public class Game {
 		int input = sc.nextInt();  
 		sc.nextLine();
 		if (input == 1 || input == 2) { 
-			generateCryptogram(sc, input, play);
+			generateCryptogram(sc, input, play,0);
 		}
 		// If the input it read was not of the two digits, it gives an error
 		else {
@@ -270,7 +280,7 @@ public class Game {
 	                break;
 				case GUESS: 
 					// Carries out the enterLetter method, depending on the type of Cryptogram created 
-					if (currCrypto instanceof alphabeticalCrypto) {
+					if (intTypeCrypto==1) {
 						enterLetterAlpha(sc, currCrypto, play);
 					}
 					else {
@@ -281,14 +291,18 @@ public class Game {
 					// Carries out the undoLetter method - allowing players to remove letters from their solution
 					undoLetter(sc);
 					break;
+				case HINT:
+					giveHint(currCrypto,play);
+					break;
 				case SAVE:
 					saveGame(currCrypto, play, sc);
 					break;
 				case LOAD:
-					loadGame(currCrypto, play, sc);
+					loadGame(currCrypto, play);
 					break;
 				case EXIT:
 					// Exits the program
+					play.savePlayers(play);
 					System.out.println("Now exiting...");
 					complete = true;
 					break;
@@ -300,6 +314,9 @@ public class Game {
 					break;
 				case STATS:
 					showStatOptions(play, sc);
+					break;
+				case FREQ:
+					printFrequencies(currCrypto);
 					break;
 			}
 		}
@@ -328,6 +345,87 @@ public class Game {
 				if (currCrypto.intEncryptedPhrase[i] == 0) {
 					playerGuess[i] = ' ';
 				}
+			}
+		}
+	}
+
+// ------------------ SPRINT 3 ------------------ //
+
+	public static void giveHint(Cryptogram currCrypto,Player play){
+		//checks which kind of cryptogram is currently being used
+		if (intTypeCrypto==1){
+			giveLetterHint(currCrypto,play);
+		}else{
+			giveNumberHint(currCrypto,play);
+		}
+	}
+
+	public static void giveLetterHint(Cryptogram currCrypto,Player play){
+		boolean hintApplied = false;
+		char[] charSolution = currCrypto.phrase.toCharArray();
+		char[] encryption = currCrypto.getEncryption();
+		char[] temp = currCrypto.getPhrase().toUpperCase().toCharArray();
+
+		while(!hintApplied) {
+			//chooses a random number within the length of the phrase in play to attempt to provide a hint for
+			int rndm = new Random().nextInt(currCrypto.encryptedPhrase.length);
+			//checks whether the random element of the guess has already been entered into by the user
+			if (playerGuess[rndm] != 0) {
+				//checks whether the guess entered by the user is correct or not
+				if (playerGuess[rndm] != charSolution[rndm]) {
+					//enters the letter into the user's guess
+					char replacer = Character.toUpperCase(currCrypto.encryptedPhrase[rndm]);
+					char guess = Character.toUpperCase(charSolution[rndm]);
+					enterLetterAlphHelper(temp,guess,replacer,encryption,play,1);
+					System.out.println("An incorrect guess has been corrected to give you a hint.");
+					currSolution();
+					checkCorrectness(temp, play, 2);
+					hintApplied = true;
+				}
+			}else{
+				//enters the letter into the user's guess
+				char replacer = Character.toUpperCase(currCrypto.encryptedPhrase[rndm]);
+				char guess = Character.toUpperCase(charSolution[rndm]);
+				enterLetterAlphHelper(temp,guess,replacer,encryption,play,1);
+				System.out.println("A letter has been revealed to give you a hint.");
+				currSolution();
+				checkCorrectness(temp, play, 2);
+				hintApplied = true;
+			}
+		}
+	}
+
+	public static void giveNumberHint(Cryptogram currCrypto,Player play){
+		boolean hintApplied = false;
+		char[] charSolution = currCrypto.phrase.toCharArray();
+		int[] encryption = currCrypto.getIntEncryption();
+		char[] temp = currCrypto.getPhrase().toUpperCase().toCharArray();
+
+		while(!hintApplied) {
+			//chooses a random number within the length of the phrase in play to attempt to provide a hint for
+			int rndm = new Random().nextInt(currCrypto.intEncryptedPhrase.length);
+			//checks whether the random element of the guess has already been entered into by the user
+			if (playerGuess[rndm] != 0) {
+				//checks whether the guess entered by the user is correct or not
+				if (playerGuess[rndm] != charSolution[rndm]) {
+					//enters the letter into the user's guess
+					int replacer = Character.toUpperCase(currCrypto.intEncryptedPhrase[rndm]);
+					char guess = Character.toUpperCase(charSolution[rndm]);
+					enterLetterNumHelper(temp,guess,replacer,encryption,play,1);
+					System.out.println("An incorrect guess has been corrected to give you a hint.");
+					currSolution();
+					checkCorrectness(temp, play, 2);
+					hintApplied = true;
+				}
+			}else{
+				//enters the letter into the user's guess
+				int replacer = Character.toUpperCase(currCrypto.intEncryptedPhrase[rndm]);
+				char guess = Character.toUpperCase(charSolution[rndm]);
+				enterLetterNumHelper(temp,guess,replacer,encryption,play,1);
+				System.out.println("A letter has been revealed to give you a hint.");
+				currSolution();
+				checkCorrectness(temp, play, 2);
+				hintApplied = true;
 			}
 		}
 	}
@@ -391,7 +489,7 @@ public class Game {
 
 	//Method for getting rid of user's previous save when they want to save a new crypto
 	public static void overwrite(Cryptogram currCrypto, Player play) {
-		File myObj1 = new File("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt");
+		File myObj1 = new File("savedLetterCryptos.txt");
 		List<String> words1 = new ArrayList<String>();
 		List<String> loadUsername = new ArrayList<String>();
 		List<String> loadPuzzle = new ArrayList<String>();
@@ -425,8 +523,8 @@ public class Game {
 			loadGuess.remove(removeInt);
 			loadSolution.remove(removeInt);
 			try {
-				FileWriter fw = new FileWriter("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt");
-				BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt", true));
+				FileWriter fw = new FileWriter("savedLetterCryptos.txt");
+				BufferedWriter bw = new BufferedWriter(new FileWriter("savedLetterCryptos.txt", true));
 				fw.write("");
 				for (int j = 0; j < loadUsername.size(); j++) {
 					bw.append(loadUsername.get(j));
@@ -447,7 +545,7 @@ public class Game {
 			}
 		}
 		else {
-			File myObj2 = new File("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt");
+			File myObj2 = new File("savedNumberCryptos.txt");
 			List<String> words2 = new ArrayList<String>();
 			List<String> loadIntUsername = new ArrayList<String>();
 			ArrayList<String> tempPuzzle = new ArrayList<String>();
@@ -482,8 +580,8 @@ public class Game {
 					loadIntGuess.remove(removeInt);
 					loadIntSolution.remove(removeInt);
 					try {
-						FileWriter fw = new FileWriter("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt");
-						BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt", true));
+						FileWriter fw = new FileWriter("savedNumberCryptos.txt");
+						BufferedWriter bw = new BufferedWriter(new FileWriter("savedNumberCryptos.txt", true));
 						fw.write("");
 						for (int j = 0; j < loadIntUsername.size(); j++) {
 							bw.append(loadIntUsername.get(j));
@@ -512,7 +610,7 @@ public class Game {
 	//This method checks whether the user has any previous saves
 	public static boolean previousSaveGame(Player play) {
 		boolean previous = false;
-		File myObj1 = new File("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt");
+		File myObj1 = new File("savedLetterCryptos.txt");
 		List<String> words1 = new ArrayList<String>();
 		try (Scanner sc = new Scanner((myObj1), StandardCharsets.UTF_8.name())) {
 			while (sc.hasNextLine()) {
@@ -528,7 +626,7 @@ public class Game {
 				previous = true;
 			}
 		}
-		File myObj2 = new File("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt");
+		File myObj2 = new File("savedNumberCryptos.txt");
 		List<String> words2 = new ArrayList<String>();
 		try(Scanner sc = new Scanner((myObj2), StandardCharsets.UTF_8.name())) {
 			while(sc.hasNextLine()) {
@@ -551,7 +649,7 @@ public class Game {
 	public static void writeToLetterCryptogramFile(Cryptogram currCrypto, Player play){
 		char[] encryption = currCrypto.getEncryption();
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt", true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("savedLetterCryptos.txt", true));
 			bw.append(play.getUsername());
 			bw.append(",");
 			for (int i = 0; i < encryption.length; i++) {
@@ -576,7 +674,7 @@ public class Game {
 	public static void writeToNumberCryptogramFile(Cryptogram currCrypto, Player play){
 		int[] encryption = currCrypto.getIntEncryption();
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt", true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("savedNumberCryptos.txt", true));
 			bw.append(play.getUsername());
 			bw.append(",");
 			for (int i = 0; i < playerGuess.length; i++) {
@@ -599,28 +697,23 @@ public class Game {
 	}
 
 	//This method loads the user's previous save if it exists
-	public static void loadGame(Cryptogram currCrypto, Player play, Scanner sc) {
-		File myObj = new File("C:\\Users\\scott\\Desktop\\savedLetterCryptos.txt");
-		if (myObj.length() != 0) {
-			readLetterCryptogramsFile(currCrypto, play, sc, myObj);
-		}
-		else {
-			myObj = new File("C:\\Users\\scott\\Desktop\\savedNumberCryptos.txt");
-			if (myObj.length() != 0) {
-				readNumberCryptogramsFile(currCrypto, play, sc, myObj);
-			}
-			else {
-				System.out.println("There was nothing to load...");
-			}
+	public static void loadGame(Cryptogram currCrypto, Player play) {
+		int letters = readLetterCryptogramsFile(currCrypto, play);
+		int numbers = readNumberCryptogramsFile(currCrypto, play);
+		if (letters + numbers == 0){
+			System.out.println("You have no saved cryptograms to load.");
 		}
 	}
 
+
 	//This method read the letter cryptograms file
-	public static void readLetterCryptogramsFile(Cryptogram currCrypto, Player play, Scanner sc, File myObj){
+	public static int readLetterCryptogramsFile(Cryptogram currCrypto, Player play){
+		int present = 0;
+		File myObj = new File("savedLetterCryptos.txt");
 		List<String> words = new ArrayList<String>();
-		try(Scanner reader = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
-			while(reader.hasNextLine()) {
-				words.add(reader.nextLine());
+		try(Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
+			while(sc.hasNextLine()) {
+				words.add(sc.nextLine());
 			}
 		}
 		catch (IOException e) {
@@ -629,32 +722,40 @@ public class Game {
 		for(String line : words){
 			String [] split = line.split(",");
 			if (split[0].equals(play.getUsername())) {
-				char[] encryption = split[1].toCharArray();
-				char[] loadGuess = split[2].toCharArray();
+				intTypeCrypto=1;
+				String loadPuzzle = split[1];
+				String loadGuess = split[2];
 				String loadSolution = split[3];
-				playerGuess = new char[loadGuess.length];
-				currCrypto = new alphabeticalCrypto(loadSolution, encryption);
-				setupPlayerGuess(currCrypto);
-				for (int i = 0; i < loadGuess.length; i++) {
-						playerGuess[i] = loadGuess[i];
+				char[] ch1 = new char[loadPuzzle.length()];
+				for (int i = 0; i < loadPuzzle.length(); i++) {
+					ch1[i] = loadPuzzle.charAt(i);
 				}
-				System.out.print("Encoded phrase: ");
-				for (int i = 0; i < encryption.length; i++) {
-					System.out.print(encryption[i]);	
+				char[] ch2 = new char[loadGuess.length()];
+				for (int i = 0; i < loadGuess.length(); i++) {
+					ch2[i] = loadGuess.charAt(i);
 				}
-				System.out.println(" ");
-				currSolution();
+				currCrypto.phrase = loadSolution;
+				currCrypto.encryptedPhrase = ch1;
+				playerGuess = ch2;
+				System.out.println("Encoded phrase: ");
+				System.out.println(loadPuzzle);
+				System.out.println("Current guess: ");
+				System.out.println(loadGuess);
+				present = 1;
 			}
 		}
-		commandInput(sc, currCrypto, play, playerGuess);
+		return present;
 	}
 
+
 	//This method read the number cryptograms file
-	public static void readNumberCryptogramsFile(Cryptogram currCrypto, Player play, Scanner sc, File myObj) {
+	public static int readNumberCryptogramsFile(Cryptogram currCrypto, Player play) {
+		int present = 0;
+		File myObj = new File("savedNumberCryptos.txt");
 		List<String> words = new ArrayList<String>();
-		try (Scanner reader = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
-			while (reader.hasNextLine()) {
-				words.add(reader.nextLine());
+		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
+			while (sc.hasNextLine()) {
+				words.add(sc.nextLine());
 			}
 		}
 		catch (IOException e) {
@@ -663,27 +764,35 @@ public class Game {
 		for (String line : words) {
 			String[] split = line.split(",");
 			if (split[0].equals(play.getUsername())) {
-				char[] loadGuess = split[1].toCharArray();
+				intTypeCrypto=2;
+				String loadGuess = split[1];
 				String loadSolution = split[2];
-				int[] encryption = new int[loadSolution.length()];
-				playerGuess = new char[loadGuess.length];
+				int[] ch1 = new int[loadSolution.length()];
 				for (int i = 0; i < loadSolution.length(); i++) {
-					encryption[i] = Integer.parseInt(split[i + 3]);
+					ch1[i] = Integer.parseInt(split[i + 3]);
 				}
-				currCrypto = new numericalCrypto(loadSolution, encryption);
-				playerGuess = loadGuess;
+				char[] ch2 = new char[loadGuess.length()];
+				for (int i = 0; i < loadGuess.length(); i++) {
+					ch2[i] = loadGuess.charAt(i);
+				}
+				currCrypto.phrase = loadSolution;
+				currCrypto.intEncryptedPhrase = ch1;
+				playerGuess = ch2;
 				System.out.println("Encoded phrase: ");
 				for (int i = 0; i < loadSolution.length(); i++) {
-					System.out.print(encryption[i]);
+					System.out.print(ch1[i]);
 					System.out.print(" ");
 				}
 				System.out.println("");
-				currSolution();
+				System.out.println("Current guess: ");
+				System.out.println(loadGuess);
+				present = 1;
 			}
 		}
-		commandInput(sc, currCrypto, play, playerGuess);
+		return present;
 	}
-		
+
+
 	public static void showSolution(Cryptogram currCrypto) {
 		System.out.println("The solution is: " + currCrypto.phrase);
 	}
@@ -705,23 +814,34 @@ public class Game {
 		Player previousStats = Players.findUser(player.getUsername());
 		switch (input) {
 			case 1:
-				int totalGuesses = player.getGuesses() + previousStats.getGuesses();
-				int correctGuesses = player.getCorrectGuesses() + previousStats.getCorrectGuesses();
-				double accuracy = ((double) correctGuesses / (double) totalGuesses) * 100;
+				int totalGuesses = player.getGuesses();
+				int correctGuesses = player.getCorrectGuesses();
+				double accuracy = player.getAccuracy();
 				System.out.println("You have made " + totalGuesses + " guesses. " + correctGuesses + " of which were right meaning you have an accuracy of " + accuracy + "%");
 				break;
 			case 2:
-				int cryptogramsPlayed = player.getNumCryptogramsPlayed() + previousStats.getNumCryptogramsPlayed();
+				int cryptogramsPlayed = player.getNumCryptogramsPlayed();
 				System.out.println("You have played " + cryptogramsPlayed + " cryptograms");
 				break;
 			case 3:
-				int cryptogramsCompleted = player.getNumCryptogramsCompleted() + previousStats.getNumCryptogramsCompleted();
+				int cryptogramsCompleted = player.getNumCryptogramsCompleted();
 				System.out.println("You have completed " + cryptogramsCompleted + " cryptograms");
 				break;
 			default:
 				System.out.println("This was not a valid action");
 				break;
 		}
+	}
+	
+	public static void printFrequencies(Cryptogram currCrypto) {
+		HashMap<Character, Integer> frequencies = currCrypto.getFrequencies();
+		int totalChars = currCrypto.getCharTotal();
+		System.out.println("The following is the frequencies for the cryptogram:");
+		frequencies.forEach((key, value) -> {
+			double percent = ((double) value / (double) totalChars * 100);
+			System.out.println(key + " : " + value + " : " + Math.round(percent) + "%");
+
+		});
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
