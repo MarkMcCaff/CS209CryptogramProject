@@ -14,6 +14,8 @@ public class commandWords {
         validCommands.put("help", commandWord.HELP);
         validCommands.put("solution", commandWord.SOLUTION);
         validCommands.put("stats", commandWord.STATS);
+        validCommands.put("hint", commandWord.HINT);
+        validCommands.put("frequencies", commandWord.FREQ);
     }
 
 	public commandWord getCommandWord(String commandWord) {
