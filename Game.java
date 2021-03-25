@@ -349,6 +349,7 @@ public class Game {
 // ------------------ SPRINT 3 ------------------ //
 
 	public static void giveHint(Cryptogram currCrypto,Player play){
+		//checks which kind of cryptogram is currently being used
 		if (intTypeCrypto==1){
 			giveLetterHint(currCrypto,play);
 		}else{
@@ -363,10 +364,13 @@ public class Game {
 		char[] temp = currCrypto.getPhrase().toUpperCase().toCharArray();
 
 		while(!hintApplied) {
+			//chooses a random number within the length of the phrase in play to attempt to provide a hint for
 			int rndm = new Random().nextInt(currCrypto.encryptedPhrase.length);
-
+			//checks whether the random element of the guess has already been entered into by the user
 			if (playerGuess[rndm] != 0) {
+				//checks whether the guess entered by the user is correct or not
 				if (playerGuess[rndm] != charSolution[rndm]) {
+					//enters the letter into the user's guess
 					char replacer = Character.toUpperCase(currCrypto.encryptedPhrase[rndm]);
 					char guess = Character.toUpperCase(charSolution[rndm]);
 					enterLetterAlphHelper(temp,guess,replacer,encryption,play,1);
@@ -376,6 +380,7 @@ public class Game {
 					hintApplied = true;
 				}
 			}else{
+				//enters the letter into the user's guess
 				char replacer = Character.toUpperCase(currCrypto.encryptedPhrase[rndm]);
 				char guess = Character.toUpperCase(charSolution[rndm]);
 				enterLetterAlphHelper(temp,guess,replacer,encryption,play,1);
@@ -394,10 +399,13 @@ public class Game {
 		char[] temp = currCrypto.getPhrase().toUpperCase().toCharArray();
 
 		while(!hintApplied) {
+			//chooses a random number within the length of the phrase in play to attempt to provide a hint for
 			int rndm = new Random().nextInt(currCrypto.intEncryptedPhrase.length);
-
+			//checks whether the random element of the guess has already been entered into by the user
 			if (playerGuess[rndm] != 0) {
+				//checks whether the guess entered by the user is correct or not
 				if (playerGuess[rndm] != charSolution[rndm]) {
+					//enters the letter into the user's guess
 					int replacer = Character.toUpperCase(currCrypto.intEncryptedPhrase[rndm]);
 					char guess = Character.toUpperCase(charSolution[rndm]);
 					enterLetterNumHelper(temp,guess,replacer,encryption,play,1);
@@ -407,6 +415,7 @@ public class Game {
 					hintApplied = true;
 				}
 			}else{
+				//enters the letter into the user's guess
 				int replacer = Character.toUpperCase(currCrypto.intEncryptedPhrase[rndm]);
 				char guess = Character.toUpperCase(charSolution[rndm]);
 				enterLetterNumHelper(temp,guess,replacer,encryption,play,1);
