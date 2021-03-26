@@ -836,12 +836,39 @@ public class Game {
 	public static void printFrequencies(Cryptogram currCrypto) {
 		HashMap<Character, Integer> frequencies = currCrypto.getFrequencies();
 		int totalChars = currCrypto.getCharTotal();
+		System.out.println("A : 8.12%");
+		System.out.println("B : 1.49%");
+		System.out.println("C : 2.71%");
+		System.out.println("D : 4.32%");
+		System.out.println("E : 12.02%");
+		System.out.println("F : 2.30%");
+		System.out.println("G : 2.03%");
+		System.out.println("H : 5.92%");
+		System.out.println("I : 7.31%");
+		System.out.println("J : 0.10%");
+		System.out.println("K : 0.69%");
+		System.out.println("L : 3.98%");
+		System.out.println("M : 2.61%");
+		System.out.println("N : 6.95%");
+		System.out.println("O : 7.68%");
+		System.out.println("P : 1.82%");
+		System.out.println("Q : 0.11%");
+		System.out.println("R : 6.02%");
+		System.out.println("S : 6.28%");
+		System.out.println("T : 9.10%");
+		System.out.println("U : 2.88%");
+		System.out.println("V : 1.11%");
+		System.out.println("W : 2.09%");
+		System.out.println("X : 0.17%");
+		System.out.println("Y : 2.11%");
+		System.out.println("Z : 0.07%");
 		System.out.println("The following is the frequencies for the cryptogram:");
 		frequencies.forEach((key, value) -> {
 			double percent = ((double) value / (double) totalChars * 100);
 			System.out.println(key + " : " + value + " : " + Math.round(percent) + "%");
 
 		});
+		System.out.println("The following is the frequencies for every letter in the english alphabet:");
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
