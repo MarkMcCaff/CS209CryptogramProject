@@ -315,6 +315,9 @@ public class Game {
 				case STATS:
 					showStatOptions(play, sc);
 					break;
+				case FREQ:
+					printFrequencies(currCrypto);
+					break;
 			}
 		}
 	}
@@ -828,6 +831,17 @@ public class Game {
 				System.out.println("This was not a valid action");
 				break;
 		}
+	}
+	
+	public static void printFrequencies(Cryptogram currCrypto) {
+		HashMap<Character, Integer> frequencies = currCrypto.getFrequencies();
+		int totalChars = currCrypto.getCharTotal();
+		System.out.println("The following is the frequencies for the cryptogram:");
+		frequencies.forEach((key, value) -> {
+			double percent = ((double) value / (double) totalChars * 100);
+			System.out.println(key + " : " + value + " : " + Math.round(percent) + "%");
+
+		});
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {

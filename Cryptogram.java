@@ -3,11 +3,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class Cryptogram {
 
 	protected String phrase;
-	public int frequency;
+	HashMap<Character, Integer> frequencies = new HashMap<>();
 	public char[] encryptedPhrase;
 	public int[] intEncryptedPhrase;
 	public ArrayList<String> phraseList;
@@ -48,10 +49,6 @@ public class Cryptogram {
 		}
 	}
 	
-	public int getFrequency() {
-		return frequency;
-	}
-	
 	public String getPhrase() {
 		return phrase;
 	}
@@ -64,5 +61,35 @@ public class Cryptogram {
 	// If the puzzle is numerical, it will call this method 
 	public int[] getIntEncryption() {
 		return intEncryptedPhrase;
+	}
+	
+	public HashMap<Character, Integer> getFrequencies() {
+		String phrase = this.getPhrase();	
+		for (int i = 0; i < phrase.length(); i++) {
+			if (phrase.charAt(i) != ' ') {
+				char indivChar = phrase.charAt(i);
+				if (!frequencies.containsKey(indivChar)) {
+					int thisFrequency = 1;
+					for (int j = 0; j < phrase.length(); j++) {
+						char currentChar = phrase.charAt(j);
+						if (currentChar == indivChar && j != i) {
+							thisFrequency++;
+						}
+					}
+					frequencies.put(indivChar, thisFrequency);
+				}
+			}
+		}
+		return frequencies;
+	}
+	
+	public int getCharTotal() {
+		int totalChars = 0;
+		String phrase = this.getPhrase().strip();
+		for (int i = 0; i < phrase.length(); i++) {
+			if(phrase.charAt(i) != ' ')    
+	                totalChars++;    
+	        }    
+		return totalChars;
 	}
 }
