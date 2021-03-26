@@ -747,16 +747,16 @@ public class Game {
 		
 	public static void showLeaderboard() {
 		File myObj = new File("savedPlayers.txt");
-		int topScores[] = new int [10];
+		Double topScores[] = new Double [10];
 		int count;
 		int currentScore;
-		int max;
+		Double max;
+		Double cryptogramsCompleted;
+		Double cryptogramsPlayed;
 		String topPlayers [];
 		
 		List<String> players = new ArrayList<String>(); 
 		List<Double> scores = new ArrayList<Double>();
-		List<Integer> cryptogramsCompleted = new ArrayList<Integer>();
-		List<Integer> cryptogramsPlayed = new ArrayList<Integer>();
 		List<String> words = new ArrayList<String>();
 		
    		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
@@ -769,22 +769,26 @@ public class Game {
    		for (String line : words) {
    			String[] split = line.split(",");
    			players.add(split[0]);
-   			cryptogramsPlayed.add(Integer.parseInt(split[4]));
-   			cryptogramsCompleted.add(Integer.parseInt(split[5]));
+   			cryptogramsPlayed = (Double.parseDouble(split[4]));
+   			cryptogramsCompleted = (Double.parseDouble(split[5]));
    			for(int i = 0; i < players.size(); i++) {
-   				scores.add(i) = (cryptogramsCompleted(i) / cryptogramsPlayed(i));
+   				scores.add(cryptogramsCompleted / cryptogramsPlayed);
    			}
    		}
 			count = 0;
 			
    		for(int i = 0; i < scores.size(); i++) {
    			if(scores.get(i) > 0)
-   				currentScore = scores.get(i);
+   				max = scores.get(i);
    				for(int j = 0; j < scores.size(); j++) {
-   					if(scores.get(i) > scores.get(j)) {
-   						topScores = scores.get(i);
+   					if(scores.get(j) > scores.get(i)) {
+   						max = scores.get(j);
    					}
+   					topScores(i) = max;
+   					scores.remove(max);
+   					
    				}
+
    					count++;
    				
    			}
