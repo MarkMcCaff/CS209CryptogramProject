@@ -744,10 +744,11 @@ public class Game {
 		}
 	}
 	
-	public static void showLeaderboard() {
+		public static void showLeaderboard() {
 		File myObj = new File("savedPlayers.txt");
-		int topScores[];
+		int topScores[] = new int [10];
 		int count;
+		int currentScore;
 		String topPlayers [];
 		List<String> players = new ArrayList<String>(); 
 		List<Integer> scores = new ArrayList<Integer>();
@@ -766,8 +767,15 @@ public class Game {
    			scores.add(Integer.parseInt(split[5]));
    		}
 			count = 0;
-   		for(int i = 0; i < players.size(); i++) {
-   			
+			
+   		for(int i = 0; i < scores.size(); i++) {
+   			if(scores.get(i) > 0)
+   				currentScore = scores.get(i);
+   				for(int j = 0; j < scores.size(); j++) {
+   					if(scores.get(i) > scores.get(j)) {
+   						topScores = scores.get(i);
+   					}
+   				}
    					count++;
    				
    			}
