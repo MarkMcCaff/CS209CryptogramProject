@@ -776,6 +776,7 @@ public class Game {
    			}
    		}
 			count = 0;
+			max = 0.0;
 			
    		for(int i = 0; i < scores.size(); i++) {
    			if(scores.get(i) > 0)
@@ -784,7 +785,7 @@ public class Game {
    					if(scores.get(j) > scores.get(i)) {
    						max = scores.get(j);
    					}
-   					topScores(i) = max;
+   					topScores[i] = max;
    					scores.remove(max);
    					
    				}
