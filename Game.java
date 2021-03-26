@@ -744,16 +744,21 @@ public class Game {
 		}
 	}
 	
-		public static void showLeaderboard() {
+		
+	public static void showLeaderboard() {
 		File myObj = new File("savedPlayers.txt");
 		int topScores[] = new int [10];
 		int count;
 		int currentScore;
-		String topPlayers [];
-		List<String> players = new ArrayList<String>(); 
-		List<Integer> scores = new ArrayList<Integer>();
-		List<String> words = new ArrayList<String>();
 		int max;
+		String topPlayers [];
+		
+		List<String> players = new ArrayList<String>(); 
+		List<Double> scores = new ArrayList<Double>();
+		List<Integer> cryptogramsCompleted = new ArrayList<Integer>();
+		List<Integer> cryptogramsPlayed = new ArrayList<Integer>();
+		List<String> words = new ArrayList<String>();
+		
    		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
    			while (sc.hasNextLine()) {
    				words.add(sc.nextLine());
@@ -764,7 +769,11 @@ public class Game {
    		for (String line : words) {
    			String[] split = line.split(",");
    			players.add(split[0]);
-   			scores.add(Integer.parseInt(split[5]));
+   			cryptogramsPlayed.add(Integer.parseInt(split[4]));
+   			cryptogramsCompleted.add(Integer.parseInt(split[5]));
+   			for(int i = 0; i < players.size(); i++) {
+   				scores.add(i) = (cryptogramsCompleted(i) / cryptogramsPlayed(i));
+   			}
    		}
 			count = 0;
 			
@@ -780,7 +789,6 @@ public class Game {
    				
    			}
    		}
-   		
 	
 	
 	public static void main(String[] args) throws FileNotFoundException {
