@@ -309,6 +309,8 @@ public class Game {
 					showStatOptions(play, sc);
 					break;
 				case LEADERBOARD:
+					showLeaderBoard();
+					break;
 					
 			}
 		}
