@@ -905,8 +905,12 @@ public class Game {
 				scores.add(0.0);
 			}
 		}
+		int size = 10;
+		if(scores.size()<10){
+			size = scores.size();
+		}
 		max = 0.0;
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < size; i++) {
 			max = Collections.max(scores);
 			topScores[i] = max;
 			int index = scores.indexOf(Collections.max(scores));
@@ -914,8 +918,12 @@ public class Game {
 			scores.remove(max);
 			players.remove(index);
 		}
-		for(int i = 0; i < 10; i++) {
-			System.out.println((i+1) + ": " + topPlayers[i] + " - " + topScores[i]);
+		if (size==0){
+			System.out.println("There are not any scores yet");
+		}else {
+			for (int i = 0; i < size; i++) {
+				System.out.println((i + 1) + ": " + topPlayers[i] + " - " + topScores[i]);
+			}
 		}
 	}
 
