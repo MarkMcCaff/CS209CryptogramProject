@@ -308,7 +308,7 @@ public class Game {
 				case STATS:
 					showStatOptions(play, sc);
 					break;
-				case LEADERBOARD;
+				case LEADERBOARD:
 					
 			}
 		}
@@ -745,15 +745,13 @@ public class Game {
 	}
 	
 		
-	public static void showLeaderboard() {
+		public static void showLeaderboard() {
 		File myObj = new File("savedPlayers.txt");
 		Double topScores[] = new Double [10];
-		int count;
-		int currentScore;
 		Double max;
 		Double cryptogramsCompleted;
 		Double cryptogramsPlayed;
-		String topPlayers [];
+		String topPlayers [] = new String [10];
 		
 		List<String> players = new ArrayList<String>(); 
 		List<Double> scores = new ArrayList<Double>();
@@ -775,7 +773,6 @@ public class Game {
    				scores.add(cryptogramsCompleted / cryptogramsPlayed);
    			}
    		}
-			count = 0;
 			max = 0.0;
 			
    		for(int i = 0; i < scores.size(); i++) {
@@ -786,13 +783,15 @@ public class Game {
    						max = scores.get(j);
    					}
    					topScores[i] = max;
+   					//topPlayers[i] = scores.get(p);
    					scores.remove(max);
    					
    				}
-
-   					count++;
    				
    			}
+			for(int i = 0; i < 10; i++) {
+			System.out.println(topScores[i]);
+			}
    		}
 	
 	
