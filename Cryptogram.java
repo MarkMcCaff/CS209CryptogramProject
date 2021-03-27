@@ -35,7 +35,7 @@ public class Cryptogram {
 	// reads phrases from from a text file and stores them into an ArrayList
 	public void readFile() {
 		try {
-			File myObj = new File("phrases.txt");
+			File myObj = new File("C:\\Users\\scott\\Desktop\\savedPhrases.txt");
 			phraseList = new ArrayList<String>();
 			Scanner sc = new Scanner(myObj);
 			while (sc.hasNextLine()) {
@@ -63,19 +63,26 @@ public class Cryptogram {
 		return intEncryptedPhrase;
 	}
 	
+	// Gets the frequency of each letter and returns their frequencies as a hashmap
 	public HashMap<Character, Integer> getFrequencies() {
+		// Gets the original string for comparing
 		String phrase = this.getPhrase();	
 		for (int i = 0; i < phrase.length(); i++) {
+			// Gets the character and adds it to the hashmap only if it's not a space or hasn't been seen already
 			if (phrase.charAt(i) != ' ') {
 				char indivChar = phrase.charAt(i);
 				if (!frequencies.containsKey(indivChar)) {
+					// As there's already 1 character there, the frequency can be one
 					int thisFrequency = 1;
 					for (int j = 0; j < phrase.length(); j++) {
+						// Gets each phrase and checks it against the rest of the string
 						char currentChar = phrase.charAt(j);
 						if (currentChar == indivChar && j != i) {
+							// Increments the frequency variable only if they're equal and not at the same positions
 							thisFrequency++;
 						}
 					}
+					// Puts the character and its frequency into the hashmap
 					frequencies.put(indivChar, thisFrequency);
 				}
 			}
@@ -84,12 +91,16 @@ public class Cryptogram {
 	}
 	
 	public int getCharTotal() {
+		// Gets the phrase and sets the number of characters to 0
 		int totalChars = 0;
-		String phrase = this.getPhrase().strip();
+		String phrase = this.getPhrase();
+		// Loops for the string length
 		for (int i = 0; i < phrase.length(); i++) {
-			if(phrase.charAt(i) != ' ')    
+			// If the character isn't a space, the number of total characters is incremented 
+			if (phrase.charAt(i) != ' ') {    
 	                totalChars++;    
-	        }    
+	        }
+		}
 		return totalChars;
 	}
 }
