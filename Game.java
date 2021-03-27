@@ -875,18 +875,22 @@ public class Game {
 		System.out.println("The following is the frequencies for every letter in the english alphabet:");
 	}
 
+		// Method for creating and displaying the leader board of the top 10 players 
 	public static void showLeaderboard() {
+		// Set up File, Arrays, Variables and ArrayLists
 		File myObj = new File("savedPlayers.txt");
+		
 		Double topScores[] = new Double [10];
+		String topPlayers[] = new String [10];
+	
 		Double max;
 		Double cryptogramsCompleted;
 		Double cryptogramsPlayed;
-		String topPlayers[] = new String [10];
 
 		List<String> players = new ArrayList<String>();
 		List<Double> scores = new ArrayList<Double>();
 		List<String> words = new ArrayList<String>();
-
+		
 		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
 			while (sc.hasNextLine()) {
 				words.add(sc.nextLine());
@@ -894,22 +898,28 @@ public class Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		// Search through the data and add players along with their no. of cryptograms played and completed to the
+		// new ArrayLists, allowing us to search through them
 		for (String line : words) {
 			String[] split = line.split(",");
 			players.add(split[0]);
 			cryptogramsPlayed = (Double.parseDouble(split[4]));
 			cryptogramsCompleted = (Double.parseDouble(split[5]));
+		// Calculate proportion of successfully completed cryptograms
 			if(cryptogramsPlayed!=0) {
 				scores.add(cryptogramsCompleted / cryptogramsPlayed);
 			}else{
 				scores.add(0.0);
 			}
 		}
+		// set default size to 10
 		int size = 10;
+		// if there are less than 10 high scores, alter the amount
 		if(scores.size()<10){
 			size = scores.size();
 		}
 		max = 0.0;
+		// Find the highest score, add the player and score to our arrays and then remove them from the ArrayList
 		for(int i = 0; i < size; i++) {
 			max = Collections.max(scores);
 			topScores[i] = max;
@@ -918,8 +928,9 @@ public class Game {
 			scores.remove(max);
 			players.remove(index);
 		}
-		if (size==0){//this if statement will never activate as there will always be player info stored
-			System.out.println("There are not any scores yet");
+		// Checking if there are no scores, this will never activate as there will always be player info stored
+		if (size==0){
+			System.out.println("Error - there are not any scores yet");
 		}else {
 			for (int i = 0; i < size; i++) {
 				System.out.println((i + 1) + ": " + topPlayers[i] + " - " + topScores[i]);
