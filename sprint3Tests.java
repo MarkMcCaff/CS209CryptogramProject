@@ -16,6 +16,14 @@ public class sprint3Tests {
     }
 
     @Test
+    void showSolution(){
+        numericalCrypto crypto = new numericalCrypto();
+        String solution = crypto.phrase;
+        String solutionDisplayed = game.showSolution(crypto);
+        assertEquals(solution,solutionDisplayed);
+    }
+
+    @Test
     void getHint(){
         alphabeticalCrypto crypto1 = new alphabeticalCrypto();
         game.playerGuess = new char[crypto1.encryptedPhrase.length];

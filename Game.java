@@ -796,8 +796,10 @@ public class Game {
 	}
 
 
-	public static void showSolution(Cryptogram currCrypto) {
-		System.out.println("The solution is: " + currCrypto.phrase);
+	public static String showSolution(Cryptogram currCrypto) {
+		String solution = currCrypto.phrase;
+		System.out.println("The solution is: " + solution);
+		return solution;
 	}
 	
 	public static void showStatOptions(Player player, Scanner sc) {
