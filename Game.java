@@ -918,7 +918,7 @@ public class Game {
 			scores.remove(max);
 			players.remove(index);
 		}
-		if (size==0){
+		if (size==0){//this if statement will never activate as there will always be player info stored
 			System.out.println("There are not any scores yet");
 		}else {
 			for (int i = 0; i < size; i++) {
