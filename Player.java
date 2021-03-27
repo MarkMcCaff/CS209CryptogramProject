@@ -11,8 +11,27 @@ public class Player extends Players {
 		username = name;
 		accuracy = 0;
 		totalGuesses = 0;
+		correctGuesses = 0;
 		cryptogramsPlayed = 0;
 		cryptogramsCompleted = 0;
+	}
+	
+	public Player() {
+		username = null;
+		accuracy = 0;
+		totalGuesses = 0;
+		correctGuesses = 0;
+		cryptogramsPlayed = 0;
+		cryptogramsCompleted = 0;
+	}
+	
+	public Player(String name, int totalGuesses, int corrGuesses, int cryptogramsPlayed, int cryptogramsCompleted) {
+		this.username = name;
+		this.accuracy = 0;
+		this.totalGuesses = totalGuesses;
+		this.correctGuesses = corrGuesses;
+		this.cryptogramsPlayed = cryptogramsPlayed;
+		this.cryptogramsCompleted = cryptogramsCompleted;
 	}
 	
 	public void incremementCryptogramsCompleted() {
