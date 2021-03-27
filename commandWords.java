@@ -17,6 +17,7 @@ public class commandWords {
         validCommands.put("stats", commandWord.STATS);
         validCommands.put("hint", commandWord.HINT);
         validCommands.put("frequencies", commandWord.FREQ);
+        validCommands.put("leaderboard", commandWord.LEADERBOARD);
     }
 
 	public commandWord getCommandWord(String commandWord) {

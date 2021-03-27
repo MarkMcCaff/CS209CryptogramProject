@@ -318,6 +318,9 @@ public class Game {
 				case FREQ:
 					printFrequencies(currCrypto);
 					break;
+				case LEADERBOARD:
+					showLeaderboard();
+					break;
 			}
 		}
 	}
@@ -866,11 +869,57 @@ public class Game {
 		frequencies.forEach((key, value) -> {
 			double percent = ((double) value / (double) totalChars * 100);
 			System.out.println(key + " : " + value + " : " + Math.round(percent) + "%");
-
 		});
 		System.out.println("The following is the frequencies for every letter in the english alphabet:");
 	}
-	
+
+	public static void showLeaderboard() {
+		File myObj = new File("savedPlayers.txt");
+		Double topScores[] = new Double [10];
+		int count;
+		int currentScore;
+		Double max = 0.0;
+		Double cryptogramsCompleted;
+		Double cryptogramsPlayed;
+		String topPlayers [];
+
+		List<String> players = new ArrayList<String>();
+		List<Double> scores = new ArrayList<Double>();
+		List<String> words = new ArrayList<String>();
+
+		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
+			while (sc.hasNextLine()) {
+				words.add(sc.nextLine());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (String line : words) {
+			String[] split = line.split(",");
+			players.add(split[0]);
+			cryptogramsPlayed = (Double.parseDouble(split[4]));
+			cryptogramsCompleted = (Double.parseDouble(split[5]));
+			for(int i = 0; i < players.size(); i++) {
+				scores.add(cryptogramsCompleted / cryptogramsPlayed);
+			}
+		}
+
+		for(int i = 0; i < scores.size(); i++) {
+			if(scores.get(i) > 0)
+				max = scores.get(i);
+			for(int j = 0; j < scores.size(); j++) {
+				if(scores.get(j) > scores.get(i)) {
+					max = scores.get(j);
+				}
+				topScores[i] = max;
+				scores.remove(max);
+
+			}
+		}
+		
+	}
+
+
 	public static void main(String[] args) throws FileNotFoundException {
 		Scanner sc = new Scanner(System.in); 
 		startup(sc);
