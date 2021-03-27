@@ -878,12 +878,10 @@ public class Game {
 	public static void showLeaderboard() {
 		File myObj = new File("savedPlayers.txt");
 		Double topScores[] = new Double [10];
-		int count;
-		int currentScore;
-		Double max = 0.0;
+		Double max;
 		Double cryptogramsCompleted;
 		Double cryptogramsPlayed;
-		String topPlayers [];
+		String topPlayers[] = new String [10];
 
 		List<String> players = new ArrayList<String>();
 		List<Double> scores = new ArrayList<Double>();
@@ -901,24 +899,24 @@ public class Game {
 			players.add(split[0]);
 			cryptogramsPlayed = (Double.parseDouble(split[4]));
 			cryptogramsCompleted = (Double.parseDouble(split[5]));
-			for(int i = 0; i < players.size(); i++) {
+			if(cryptogramsPlayed!=0) {
 				scores.add(cryptogramsCompleted / cryptogramsPlayed);
+			}else{
+				scores.add(0.0);
 			}
 		}
-
-		for(int i = 0; i < scores.size(); i++) {
-			if(scores.get(i) > 0)
-				max = scores.get(i);
-			for(int j = 0; j < scores.size(); j++) {
-				if(scores.get(j) > scores.get(i)) {
-					max = scores.get(j);
-				}
-				topScores[i] = max;
-				scores.remove(max);
-
-			}
+		max = 0.0;
+		for(int i = 0; i < 10; i++) {
+			max = Collections.max(scores);
+			topScores[i] = max;
+			int index = scores.indexOf(Collections.max(scores));
+			topPlayers[i] = players.get(index);
+			scores.remove(max);
+			players.remove(index);
 		}
-		
+		for(int i = 0; i < 10; i++) {
+			System.out.println((i+1) + ": " + topPlayers[i] + " - " + topScores[i]);
+		}
 	}
 
 
