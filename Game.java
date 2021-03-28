@@ -549,15 +549,18 @@ public class Game {
 		List<String> loadSolution = new ArrayList<String>();
 		String remove = play.getUsername();
 		int removeInt = -1;
+		// Inputs data from file
 		try (Scanner sc = new Scanner((myObj1), StandardCharsets.UTF_8.name())) {
 			while (sc.hasNextLine()) {
 				words1.add(sc.nextLine());
 			}
 		}
+		// Catches any exceptions
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 		int i = 0;
+		//Assigns data from each text file to each player
 		for (String line:words1) {
 			String[] split = line.split(",");
 			loadUsername.add(split[0]);
@@ -875,7 +878,7 @@ public class Game {
 				int totalGuesses = player.getGuesses();
 				int correctGuesses = player.getCorrectGuesses();
 				double accuracy = player.getAccuracy();
-				System.out.println("You have made " + totalGuesses + " guesses. " + correctGuesses + " of which were right meaning you have an accuracy of " + accuracy + "%");
+				System.out.println("You have made " + totalGuesses + " guesses. " + correctGuesses + " of which were right meaning 									you have an accuracy of " + accuracy + "%");
 				break;
 			case 2:
 				// Number of cryptograms played
