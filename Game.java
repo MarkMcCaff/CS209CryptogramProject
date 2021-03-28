@@ -949,11 +949,13 @@ public class Game {
 		List<String> players = new ArrayList<String>();
 		List<Double> scores = new ArrayList<Double>();
 		List<String> words = new ArrayList<String>();
+		// Read file 
 		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
 			while (sc.hasNextLine()) {
 				words.add(sc.nextLine());
 			}
 		}
+		// Catch any exceptions
 		catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -961,6 +963,7 @@ public class Game {
 		// new ArrayLists, allowing us to search through them
 		for (String line : words) {
 			String[] split = line.split(",");
+			// Store player name, cryptograms played and cryptograms completed to new ArrayLists
 			players.add(split[0]);
 			cryptogramsPlayed = (Double.parseDouble(split[4]));
 			cryptogramsCompleted = (Double.parseDouble(split[5]));
