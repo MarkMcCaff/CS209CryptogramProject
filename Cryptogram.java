@@ -35,7 +35,7 @@ public class Cryptogram {
 	// reads phrases from from a text file and stores them into an ArrayList
 	public void readFile() {
 		try {
-			File myObj = new File("C:\\Users\\scott\\Desktop\\savedPhrases.txt");
+			File myObj = new File("phrases.txt");
 			phraseList = new ArrayList<String>();
 			Scanner sc = new Scanner(myObj);
 			while (sc.hasNextLine()) {

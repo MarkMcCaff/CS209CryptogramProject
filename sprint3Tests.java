@@ -1,9 +1,12 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.ArrayList;
-import java.util.ArrayList;
-import java.util.Scanner;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class sprint3Tests {
@@ -110,9 +113,36 @@ public class sprint3Tests {
 			scores.remove(max);
 			players.remove(index);
 		}
-		for(int i = 0; i < 10; i++) {
-		assertEquals(topScores[0], Collections.max(scores));
-		assertEquals(topPlayers[i], players.get(topScores.get(i)));
+		//Reread in the scores so they can be checked again
+		try (Scanner sc = new Scanner((myObj), StandardCharsets.UTF_8.name())) {
+			while (sc.hasNextLine()) {
+				words.add(sc.nextLine());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (String line : words) {
+			String[] split = line.split(",");
+			players.add(split[0]);
+			cryptogramsPlayed = (Double.parseDouble(split[4]));
+			cryptogramsCompleted = (Double.parseDouble(split[5]));
+			// Calculate proportion of successfully completed cryptograms
+			if(cryptogramsPlayed!=0) {
+				scores.add(cryptogramsCompleted / cryptogramsPlayed);
+			}else{
+				scores.add(0.0);
+			}
+		}
+
+		for(int i = 0; i < size; i++) {
+			max = Collections.max(scores);
+			topScores[i] = max;
+			int index = scores.indexOf(Collections.max(scores));
+			topPlayers[i] = players.get(index);
+			assertEquals(topScores[i], Collections.max(scores));
+			assertEquals(topPlayers[i], players.get(index));
+			scores.remove(index);
+			players.remove(index);
 		}
 		
     }
