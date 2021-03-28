@@ -108,6 +108,7 @@ public class sprint3Tests {
 				required = false;
 			}
 		}
+    		assertEquals(required,true);
 
     }
 }
